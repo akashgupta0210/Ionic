@@ -1,0 +1,53 @@
+<ion-view title="Storage" ng-controller="storageCtrl" data-ng-init="">
+	<ion-header-bar class="bar bar-subheader">
+ 		<h1 class="title ml80p cursor" data-ng-click="logOut();">Logout</h1>
+    </ion-header-bar>
+    <ion-content overflow-scroll="true" padding="true"  class="has-header">
+        <ion-list>
+        	<ion-scroll zooming="true" direction="xy" style="width: auto; height: auto">
+				<table class="table table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th class="text-center">Email</th>
+							<th class="text-center">Name</th>
+							<th class="text-center">Username</th>
+							<th class="text-center">Password</th>
+							<th class="text-center">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-class-odd="'odd'" ng-class-even="'even'" data-ng-repeat="object in things" ng-if="object.password">
+							<td>{{object.email}}</td>
+							<td>{{object.name}}</td>
+							<td>{{object.username}}</td>
+							<td>{{object.password}}</td>
+							<td><span class="ion-trash-b cursor" ng-click="delete(object);"></span></td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="table table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th class="text-center">First Name</th>
+							<th class="text-center">Last Name</th>
+							<th class="text-center">Email</th>
+							<th class="text-center">DOB</th>
+							<th class="text-center">Contact</th>
+							<th class="text-center">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-class-odd="'odd'" ng-class-even="'even'" data-ng-repeat="object in things" ng-if="object.dob">
+							<td>{{object.firstName}}</td>
+							<td>{{object.lastName}}</td>
+							<td>{{object.emailId}}</td>
+							<td>{{object.dob |date:'dd-MMM-yyyy'}}</td>
+							<td>{{object.phonePre}}-{{object.phoneNumber}}</td>
+							<td><span class="ion-trash-b cursor" ng-click="delete(object);"></span></td>
+						</tr>
+					</tbody>
+				</table>
+	        </ion-scroll>
+       	</ion-list>
+    </ion-content>
+</ion-view>

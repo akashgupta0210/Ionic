@@ -1,0 +1,42 @@
+<ion-view title="Login" ng-controller="loginCtrl" ng-init="initializeLogin();">
+    <ion-content overflow-scroll="true" padding="true" style="background: url(img/wxhXjusvQ726Hccv461l_Lighthouse.jpg) no-repeat center; background-size: cover;" class="has-header">
+    <a class="error" ng-if="noEmail">Email Id is not Registered</a>
+        <form class="list" name="loginForm" novalidate="" ng-submit="loginObj(loginForm)">
+            <ion-list>
+                <div ng-class="{'has-error' : loginForm.$submitted && loginForm.email.$invalid, 'no-errors' : loginForm.$submitted && loginForm.email.$valid}">
+                    <label class="item item-input trans">
+                        <span class="input-label">Email</span>
+                        <input type="text" ng-click="removeError();" placeholder="Email" name="email" ng-model="login.email" required>
+                    </label>
+                    <div class="error-container" ng-if="loginForm.$submitted && loginForm.email.$invalid">
+                        <div ng-messages="loginForm.email.$error">
+                            <div ng-messages-include="loginerror-list.html"></div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-class="{'has-error' : loginForm.$submitted && loginForm.password.$invalid, 'no-errors' : loginForm.$submitted && loginForm.password.$valid}">
+                <label class="item item-input trans">
+                    <span class="input-label">Password</span>
+                    <input type="{{password}}" name="password" ng-model="login.password" placeholder="Password" required>
+                </label>
+                <div class="error-container" ng-if="loginForm.$submitted && loginForm.password.$invalid">
+                    <div ng-messages="loginForm.password.$error">
+                        <div ng-messages-include="loginerror-list.html"></div>
+                    </div>
+                </div>
+            </ion-list>
+            <ion-checkbox class="trans" ng-click="showPass();">Show Password</ion-checkbox>
+            <a class="error" ng-if="SignUpError">Invalid Password!</a>
+            <a id="login-button3" style="color:#FDF8F8;" class="button button-stable button-small button-block button-clear">Forgot Password</a>
+            <button id="login-button1" type="submit" class="button button-stable  button-block">Login</button>
+            <a ui-sref="signup" id="login-button2" style="color:#FDF8F8;" class="button button-positive  button-block button-clear">Or create an account</a>
+        </form>
+    </ion-content>
+</ion-view>
+
+<script id="loginerror-list.html" type="text/ng-template">  
+    <div class="error" ng-messages="required">
+        <i class="ion-information-circled"></i> 
+        This field is required!
+    </div>
+</script>

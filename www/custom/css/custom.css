@@ -1,0 +1,66 @@
+.error{
+	color:red;
+}
+
+.trans{
+	 background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0) 100%);
+}
+
+.maleGender{
+	width: 37% !important;
+}
+
+.femaleGender{
+	width: 52% !important;
+}
+
+.femaleGender > .radio-content > i{
+	width: 52% !important;
+}
+
+.maleGender > .radio-content > .item-content >span{
+	font-size: 80%;
+}
+.femaleGender > .radio-content > .item-content >span{
+	font-size: 80%;
+}
+
+.w60{
+	width: 60%!important;
+}
+
+.w100{
+	width: 100%!important;
+}
+
+#nextButton{
+	margin-left: 190px;
+}
+
+.ml128{
+	margin-left: 128px;
+}
+
+.ml92{
+	margin-left: 92px;
+}
+
+.ml120{
+	margin-left: 120px;
+}
+
+.input-label{
+	font-size: 12px!important;
+}
+
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+	font-size:12px!important;
+}
+
+.cursor{
+	cursor:pointer;
+}
+
+.ml80p{
+	margin-left: 80%!important;
+}

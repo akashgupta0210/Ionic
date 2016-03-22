@@ -1,0 +1,422 @@
+<ion-view title="Profile" ng-controller="profileCtrl" data-ng-init="initializeUser(); pages(); findOne();">
+    <ion-content overflow-scroll="true" padding="true"  class="has-header">
+        <div class="page1" ng-if="page1 == true">
+            <form class="list" name="profileForm1" novalidate="">
+                <ion-list>
+                    <label class="ml92">Personal Information</label>
+                    <div ng-class="{'has-error' : profileForm1.$submitted && profileForm1.firstname.$invalid, 'no-errors' : profileForm1.$submitted && profileForm1.firstname.$valid}">
+                        <label class="item item-input trans">
+                            <span class="input-label">First Name</span>
+                            <input type="text" placeholder="First Name" name="firstname" ng-model="user.firstName" ng-pattern="/[a-zA-Z]+/g" required>
+                        </label>
+                        <div class="error-container" ng-if="profileForm1.$submitted && profileForm1.firstname.$invalid">
+                            <div ng-messages="profileForm1.firstname.$error">
+                                <div ng-messages-include="usererror-list.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-class="{'has-error' : profileForm1.$submitted && profileForm1.lastname.$invalid, 'no-errors' : profileForm1.$submitted && profileForm1.lastname.$valid}">
+                        <label class="item item-input trans">
+                            <span class="input-label">Last Name</span>
+                            <input type="text" name="lastname" ng-model="user.lastName" placeholder="Last Name" required>
+                        </label>
+                        <div class="error-container" ng-if="profileForm1.$submitted && profileForm1.lastname.$invalid">
+                            <div ng-messages="profileForm1.lastname.$error">
+                                <div ng-messages-include="usererror-list.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gender">
+                        <label class="item item-input trans">
+                            <span class="input-label">Gender</span>
+                            <ion-radio ng-model="user.gender" class="maleGender trans" ng-value="'male'"checked="true">Male</ion-radio>
+                            <ion-radio ng-model="user.gender" class="femaleGender trans" ng-value="'female'">Female</ion-radio>
+                        </label>
+                    </div>
+                    <div ng-class="{'has-error' : profileForm1.$submitted && profileForm1.dob.$invalid, 'no-errors' : profileForm1.$submitted && profileForm1.dob.$valid}">
+                        <label class="item item-input trans">
+                            <span class="input-label">Date of Birth</span>
+                            <input type="date" name="dob" ng-model="user.dob" required>
+                        </label>
+                        <div class="error-container" ng-if="profileForm1.$submitted && profileForm1.dob.$invalid">
+                            <div ng-messages="profileForm1.dob.$error">
+                                <div ng-messages-include="usererror-list.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-class="{'has-error' : profileForm1.$submitted && profileForm1.email.$invalid, 'no-errors' : profileForm1.$submitted && profileForm1.email.$valid}">
+                        <label class="item item-input trans">
+                            <span class="input-label">Email</span>
+                            <input type="text" name="email" ng-model="user.emailId" ng-pattern=" /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/" placeholder="example@example.com" required>
+                        </label>
+                        <div class="error-container" ng-if="profileForm1.$submitted && profileForm1.email.$invalid">
+                            <div ng-messages="profileForm1.email.$error">
+                                <div ng-messages-include="usererror-list.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-class="{'has-error' : profileForm1.$submitted && profileForm1.phonePre.$invalid, 'no-errors' : profileForm1.$submitted && profileForm1.phonePre.$valid}">
+                        <label class="item item-input trans">
+                            <span class="input-label">Contact No</span>
+                            <div class="w60">
+                                <input type="text" max="2" name="phonePre" ng-model="user.phonePre" ng-pattern="/[0-9]/" placeholder="xx">
+                            </div>
+                            <div class="w100">
+                                <input type="text" name="phoneNumber" ng-model="user.phoneNumber" ng-pattern="/[0-9]/" placeholder="xxxxxxxxxx" max="10" required>
+                            </div>
+                        </label>
+                        <div class="error-container" ng-if="profileForm1.$submitted && profileForm1.phonePre.$invalid">
+                            <div ng-messages="profileForm1.phonePre.$error">
+                                <div ng-messages-include="usererror-list.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                </ion-list>
+                <div class="item-input-inset">
+                    <button class="nextButton" ng-click="nextPage(profileForm1.$valid);" class="button button-stable button-small button-block button-clear">Next</button>
+                </div>
+            </form>
+        </div>
+        <div class="page 2" ng-if="page2==true">
+            <form class="list" name="profileForm2" novalidate="">
+                <ion-list>
+                    <label class="ml128">Address</label>
+                    <div class="address" ng-repeat="address in user.address">
+                        <div class="" ng-class="{'has-error' : profileForm2.$submitted && profileForm2.addressType.$invalid, 'no-errors' : profileForm2.$submitted && profileForm2.addressType.$valid}">
+                            <label class="item item-input item-select">
+                                <div class="input-label">Address Type</div>
+                                <select name="addressType" data-ng-model="address.addressType" required>
+                                    <option value="" selected disabled>Please Select</option>
+                                    <option value="Permanent Address">Permanent</option>
+                                    <option value="Temporary Address">Temporary</option>
+                                    <option value="Office Address">Office</option>
+                                </select>
+                                <div class="error-container" ng-if="profileForm2.$submitted && profileForm2.addressType.$invalid">
+                                    <div ng-messages="profileForm2.addressType.$error">
+                                        <div ng-messages-include="usererror-list.html"></div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div ng-class="{'has-error' : profileForm2.$submitted && profileForm2.address1.$invalid, 'no-errors' : profileForm2.$submitted && profileForm2.address1.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-ios-home"></span>&nbsp;&nbsp;<input type="text" placeholder="Address Line 1" name="address1" ng-model="address.addressLine1" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm2.$submitted && profileForm2.address1.$invalid">
+                                <div ng-messages="profileForm2.address1.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="item item-input trans">
+                                <span class="ion-ios-home-outline"></span>&nbsp;&nbsp;<input type="text" placeholder="Address Line 2" name="address2" ng-model="address.addressLine2" required>
+                            </label>
+                        </div>
+                        <div ng-class="{'has-error' : profileForm2.$submitted && profileForm2.city.$invalid, 'no-errors' : profileForm2.$submitted && profileForm2.city.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-location"></span>&nbsp;&nbsp;<input type="text" placeholder="City" name="city" ng-model="address.city" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm2.$submitted && profileForm2.city.$invalid">
+                                <div ng-messages="profileForm2.city.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-class="{'has-error' : profileForm2.$submitted && profileForm2.state.$invalid, 'no-errors' : profileForm2.$submitted && profileForm2.state.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-map"></span>&nbsp;&nbsp;<input type="text" placeholder="State" name="state" ng-model="address.state" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm2.$submitted && profileForm2.state.$invalid">
+                                <div ng-messages="profileForm2.state.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-class="{'has-error' : profileForm2.$submitted && profileForm2.country.$invalid, 'no-errors' : profileForm2.$submitted && profileForm2.country.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-earth"></span>&nbsp;&nbsp;<input type="text" placeholder="Country" name="country" ng-model="address.country" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm2.$submitted && profileForm2.country.$invalid">
+                                <div ng-messages="profileForm2.country.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-class="{'has-error' : profileForm2.$submitted && profileForm2.pincode.$invalid, 'no-errors' : profileForm2.$submitted && profileForm2.pincode.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-email"></span>&nbsp;&nbsp;<input type="text" placeholder="Pincode" max="6" name="pincode" ng-model="address.pincode" ng-pattern="/[0-9]/" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm2.$submitted && profileForm2.pincode.$invalid">
+                                <div ng-messages="profileForm2.pincode.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ulPagnate">
+                            <label>&nbsp;</label>
+                                <div class="" ng-show="$last">
+                                    <button class="pull-left" type="button" ng-click="removeAddress(address)" ng-show="$index>0">
+                                        <i class="ion-android-remove-circle"></i>
+                                    </button>
+                                    <button type="button" ng-click="addAddress();" ng-if="$index<2">
+                                        <i class="ion-android-add-circle"></i>
+                                    </button>
+                                </div>
+                            <div class=""  ng-hide="$last">
+                                <button type="button" ng-click="removeAddress(address)">
+                                    <i class="ion-android-remove-circle"></i>
+                                </button>
+                            </div>
+                            <label>&nbsp;</label>
+                        </div>
+                    </div>
+                </div>
+            </ion-list>
+            <div class="item-input-inset">
+                <button class="prevButton" ng-click="prevPage(profileForm2.$valid);" class="button button-stable button-small button-block button-clear">Previous</button>
+                <button class="nextButton" ng-click="nextPage(profileForm2.$valid);" class="button button-stable button-small button-block button-clear">Next</button>
+            </div>
+        </form>
+        <div class="page 3" ng-if="page3==true">
+            <form class="list" name="profileForm3" novalidate="">
+                <ion-list>
+                    <label class="ml120">Qualification</label>
+                    <div class="Qualification" ng-repeat="qualification in user.qualification_details">
+                        <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.examname.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.examname.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder="Exam" name="examname" ng-model="qualification.examination" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm3.$submitted && profileForm3.examname.$invalid">
+                                <div ng-messages="profileForm3.examname.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.institute.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.institute.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-ribbon-a"></span>&nbsp;&nbsp;<input type="text" placeholder="Institute" name="institute" ng-model="qualification.institution" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm3.$submitted && profileForm3.institute.$invalid">
+                                <div ng-messages="profileForm3.institute.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.university.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.university.$valid}">
+                            <label class="item item-input item-select">
+                                <div class="input-label">Passing Year</div>
+                                <select name="university" data-ng-model="qualification.year_of_passing" required>
+                                    <option value="" selected disabled>Please Select</option>
+                                    <option ng-repeat="date in dates">{{date}}</option>
+                                    <option ng-if="qualification.year_of_passing" selected>{{qualification.year_of_passing}}</option>
+                                </select>
+                                <div class="error-container" ng-if="profileForm3.$submitted && profileForm3.university.$invalid">
+                                    <div ng-messages="profileForm3.university.$error">
+                                        <div ng-messages-include="usererror-list.html"></div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.grade.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.grade.$valid}">
+                            <label class="item item-input item-select">
+                                <div class="input-label">Grade</div>
+                                <select name="grade" data-ng-model="qualification.grade_obtained" required>
+                                    <option value="" selected disabled>Please Select</option>
+                                    <option value="Percentage">Percentage</option>
+                                    <option value="CGPA">CGPA</option>
+                                    <option value="SGPA">SGPA</option>
+                                </select>
+                                <div class="error-container" ng-if="profileForm3.$submitted && profileForm3.grade.$invalid">
+                                    <div ng-messages="profileForm3.grade.$error">
+                                        <div ng-messages-include="usererror-list.html"></div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.marks.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.marks.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder="Marks" name="marks" ng-model="qualification.percentage_of_marks" ng-pattern="/[0-9]/" maxlength="6" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm3.$submitted && profileForm3.marks.$invalid">
+                                <div ng-messages="profileForm3.marks.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.specialization.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.specialization.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder="Specialization(if any)" name="specialization" ng-model="qualification.specialisation" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm3.$submitted && profileForm3.specialization.$invalid">
+                                <div ng-messages="profileForm3.specialization.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ulPagnate">
+                            <label>&nbsp;</label>
+                                <div class="" ng-show="$last">
+                                    <button class="pull-left" type="button" ng-click="removeQualification(qualification)" ng-show="$index>0">
+                                        <i class="ion-android-remove-circle"></i>
+                                    </button>
+                                    <button type="button" ng-click="addQualification();">
+                                        <i class="ion-android-add-circle"></i>
+                                    </button>
+                                </div>
+                            <div class=""  ng-hide="$last">
+                                <button type="button" ng-click="removeQualification(qualification)">
+                                    <i class="ion-android-remove-circle"></i>
+                                </button>
+                            </div>
+                            <label>&nbsp;</label>
+                        </div>
+                    </div>
+                </div>
+            </ion-list>
+            <div class="item-input-inset">
+                <button class="prevButton" ng-click="prevPage(profileForm3.$valid);" class="button button-stable button-small button-block button-clear">Previous</button>
+                <button class="nextButton" ng-click="nextPage(profileForm3.$valid);" class="button button-stable button-small button-block button-clear">Next</button>
+            </div>
+        </form>
+        <div class="page 4" ng-if="page4==true">
+            <form class="list" name="profileForm4" novalidate="">
+                <ion-list>
+                    <label class="ml120">Experience</label>
+                    <div class="Qualification" ng-repeat="experience in user.experience_details">
+                        <div class="" ng-class="{'has-error' : profileForm4.$submitted && profileForm4.employer.$invalid, 'no-errors' : profileForm4.$submitted && profileForm4.employer.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder="Employer" name="employer" ng-model="experience.employer" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm4.$submitted && profileForm4.employer.$invalid">
+                                <div ng-messages="profileForm4.employer.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="" ng-class="{'has-error' : profileForm4.$submitted && profileForm4.designation.$invalid, 'no-errors' : profileForm4.$submitted && profileForm4.designation.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder="Designation" name="designation" ng-model="experience.designation" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm4.$submitted && profileForm4.designation.$invalid">
+                                <div ng-messages="profileForm4.designation.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="" ng-class="{'has-error' : profileForm4.$submitted && profileForm4.startdate.$invalid, 'no-errors' : profileForm4.$submitted && profileForm4.startdate.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="date" name="startdate" ng-model="experience.start_date" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm4.$submitted && profileForm4.startdate.$invalid">
+                                <div ng-messages="profileForm4.startdate.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="" ng-class="{'has-error' : profileForm4.$submitted && profileForm4.enddate.$invalid, 'no-errors' : profileForm4.$submitted && profileForm4.enddate.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="date" name="enddate" ng-model="experience.end_date" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm4.$submitted && profileForm4.enddate.$invalid">
+                                <div ng-messages="profileForm4.enddate.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ulPagnate">
+                            <label>&nbsp;</label>
+                                <div class="" ng-show="$last">
+                                    <button class="pull-left" type="button" ng-click="removeExperience(experience)" ng-show="$index>0">
+                                        <i class="ion-android-remove-circle"></i>
+                                    </button>
+                                    <button type="button" ng-click="addExperience();">
+                                        <i class="ion-android-add-circle"></i>
+                                    </button>
+                                </div>
+                            <div class=""  ng-hide="$last">
+                                <button type="button" ng-click="removeExperience(experience)">
+                                    <i class="ion-android-remove-circle"></i>
+                                </button>
+                            </div>
+                            <label>&nbsp;</label>
+                        </div>
+                    </div>
+                </div>
+            </ion-list>
+            <div class="item-input-inset">
+                <button class="prevButton" ng-click="prevPage(profileForm4.$valid);" class="button button-stable button-small button-block button-clear">Previous</button>
+                <button class="nextButton" ng-click="nextPage(profileForm4.$valid);" class="button button-stable button-small button-block button-clear">Next</button>
+            </div>
+        </form>
+        <div class="page 5" ng-if="page5==true">
+            <form class="list" name="profileForm5" novalidate="">
+                <ion-list>
+                    <label class="ml120">Reference</label>
+                    <div class="Qualification" ng-repeat="reference in user.references">
+                        <div class="" ng-class="{'has-error' : profileForm5.$submitted && profileForm5.refname.$invalid, 'no-errors' : profileForm5.$submitted && profileForm5.refname.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder="Refrence Name" name="refname" ng-model="reference.ref_name" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm5.$submitted && profileForm5.refname.$invalid">
+                                <div ng-messages="profileForm5.refname.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="" ng-class="{'has-error' : profileForm5.$submitted && profileForm5.contact.$invalid, 'no-errors' : profileForm5.$submitted && profileForm5.contact.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder="Refrence Contact" name="contact" ng-model="reference.ref_phno" ng-pattern="/[0-9]/" maxlength="10" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm5.$submitted && profileForm5.contact.$invalid">
+                                <div ng-messages="profileForm5.contact.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="" ng-class="{'has-error' : profileForm5.$submitted && profileForm5.comments.$invalid, 'no-errors' : profileForm5.$submitted && profileForm5.comments.$valid}">
+                            <label class="item item-input trans">
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder="Comments(if any)" name="comments" ng-model="reference.comments" required>
+                            </label>
+                            <div class="error-container" ng-if="profileForm5.$submitted && profileForm5.comments.$invalid">
+                                <div ng-messages="profileForm5.comments.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ulPagnate">
+                            <label>&nbsp;</label>
+                                <div class="" ng-show="$last">
+                                    <button class="pull-left" type="button" ng-click="removeReference(reference)" ng-show="$index>0">
+                                        <i class="ion-android-remove-circle"></i>
+                                    </button>
+                                    <button type="button" ng-click="addReference();">
+                                        <i class="ion-android-add-circle"></i>
+                                    </button>
+                                </div>
+                            <div class=""  ng-hide="$last">
+                                <button type="button" ng-click="removeReference(reference)">
+                                    <i class="ion-android-remove-circle"></i>
+                                </button>
+                            </div>
+                            <label>&nbsp;</label>
+                        </div>
+                    </div>
+                </ion-list>
+                <div class="item-input-inset">
+                    <button class="prevButton" ng-click="prevPage(profileForm5.$valid);" class="button button-stable button-small button-block button-clear">Previous</button>
+                    <button class="nextButton" ng-click="save(profileForm5.$valid);" class="button button-stable button-small button-block button-clear">Submit</button>
+                </div>
+            </form>
+        </div>
+        <progress max="100" value="{{value}}"></progress>
+    </ion-content>
+</ion-view>
+
+<script id="usererror-list.html" type="text/ng-template">  
+    <div class="error" ng-messages="required">
+        <i class="ion-information-circled"></i> 
+        This field is required!
+    </div>
+</script>

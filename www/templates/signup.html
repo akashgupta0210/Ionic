@@ -1,0 +1,63 @@
+<ion-view title="Signup" ng-controller="signupCtrl" ng-init = "initializeSignup();">
+    <ion-content overflow-scroll="true" padding="true" scroll="false" class="has-header">
+        <form class="list" name="signUpForm" novalidate="" ng-submit="createUser(signUpForm)">
+            <ion-list>
+                <div ng-class="{'has-error' : signUpForm.$submitted && signUpForm.name.$invalid, 'no-errors' : signUpForm.$submitted && signUpForm.name.$valid}">
+                    <label class="item item-input">
+                        <span class="input-label">Name</span>
+                        <input name="name" ng-model="signUp.name" type="text" placeholder="Name" required>
+                    </label>
+                    <div class="error-container" ng-if="signUpForm.$submitted && signUpForm.name.$invalid">
+                        <div ng-messages="signUpForm.name.$error">
+                            <div ng-messages-include="error-list.html"></div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-class="{'has-error' : signUpForm.$submitted && signUpForm.username.$invalid, 'no-errors' : signUpForm.$submitted && signUpForm.username.$valid}">
+                    <label class="item item-input">
+                        <span class="input-label">Username</span>
+                        <input name="username" ng-model="signUp.username" type="text" placeholder="Username" required>
+                    </label>
+                    <div class="error-container" ng-if="signUpForm.$submitted && signUpForm.username.$invalid">
+                        <div ng-messages="signUpForm.username.$error">
+                            <div ng-messages-include="error-list.html"></div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-class="{'has-error' : signUpForm.$submitted && signUpForm.password.$invalid, 'no-errors' : signUpForm.$submitted && signUpForm.password.$valid}">
+                    <label class="item item-input">
+                        <span class="input-label">Password</span>
+                        <input type="password" ng-model="signUp.password" placeholder="Password" name="password" required>
+                    </label>
+                    <div class="error-container" ng-if="signUpForm.$submitted && signUpForm.password.$invalid">
+                        <div ng-messages="signUpForm.password.$error">
+                            <div ng-messages-include="error-list.html"></div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-class="{'has-error' : signUpForm.$submitted && signUpForm.email.$invalid, 'no-errors' : signUpForm.$submitted && signUpForm.email.$valid}">
+                    <label class="item item-input">
+                        <span class="input-label">Email</span>
+                        <input name="email" ng-model="signUp.email" type="email" placeholder="Email" required>
+                    </label>
+                    <div class="error-container" ng-if="signUpForm.$submitted && signUpForm.email.$invalid">
+                        <div ng-messages="signUpForm.email.$error">
+                            <div ng-messages-include="error-list.html"></div>
+                        </div>
+                    </div>
+                </div>
+            </ion-list>
+            <button type="submit" id="signup-button4" class="button button-stable button-block">Sign up</button>
+        </form>
+        <ion-list>
+            <a ui-sref="login" style="color:#000000;" class="button button-positive  button-block button-clear">Already Have Account Click Here</a>
+        </ion-list>
+    </ion-content>
+</ion-view>
+
+<script id="error-list.html" type="text/ng-template">  
+    <div class="error" ng-messages="required">
+      <i class="ion-information-circled"></i> 
+      This field is required!
+    </div>
+</script>
