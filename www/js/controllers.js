@@ -1,31 +1,30 @@
 var app = angular.module('app.controllers', [])
   
 
-app.controller('loginCtrl', function($scope, $state, StorageService,$rootScope) {
+app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope) {
 	$scope.password="password";
-	
-	$scope.initializeLogin = function(){
-  		$scope.login = {};
-  	};
+    $scope.things = RegisterService.getAll();
+    console.log($scope.things);
+    
+    $scope.initializeLogin = function(){
+        $scope.login = {};
+    };
 
-	$scope.showPass=function(){
-		if ($scope.password == "password"){
-			$scope.password="text";
-		} else {
-			$scope.password="password";
-		}
-	};
-    $scope.things = StorageService.getAll();
+    $scope.showPass=function(){
+        if ($scope.password == "password"){
+            $scope.password="text";
+        } else {
+            $scope.password="password";
+        }
+    };
 
-	$scope.loginObj=function(loginForm){
-		if(loginForm.$valid) {
-            var loggedIn = false;
-            if (loggedIn == false){
-                for (var i=0;i<$scope.things.length;i++){
-                    if ($scope.things[i].email){
-                        if ($scope.login.email == $scope.things[i].email){
-                            if ($scope.login.password == $scope.things[i].password){
-                                loggedIn = true;
+	$scope.loginObj=function(isValid){
+		if(isValid) {
+            for (var i=0;i<$scope.things.users.length;i++){
+                    if ($scope.things.users[i].email){
+                        if ($scope.login.email == $scope.things.users[i].email){
+                            if ($scope.login.password == $scope.things.users[i].password){
+                                $state.go('profileEdit');
                             } else {
                                 $scope.SignUpError = true;
                             }
@@ -34,18 +33,17 @@ app.controller('loginCtrl', function($scope, $state, StorageService,$rootScope) 
                         }
                     }
                 }
-            }
-            if (loggedIn){
-                for (var x=0;x<$scope.things.length;x++){
-                    if ($scope.things[x].emailId){
-                        if (($scope.login.email == $scope.things[x].emailId) && $scope.things[x].dob){
-                            $state.go('storage');
-                        }
-                    } else {
-                        $state.go('profileView');
-                    }
-                }
-            }
+            // if (loggedIn){
+            //     for (var x=0;x<$scope.things.length;x++){
+            //         if ($scope.things[x].emailId){
+            //             if (($scope.login.email == $scope.things[x].emailId) && $scope.things[x].dob){
+            //                 $state.go('storage');
+            //             }
+            //         } else {
+            //             $state.go('profileView');
+            //         }
+            //     }
+            // }
 		}
 	};
 
@@ -55,15 +53,13 @@ app.controller('loginCtrl', function($scope, $state, StorageService,$rootScope) 
     }
 })
 
-app.controller('signupCtrl', function($scope,$state,StorageService) {
-    $scope.things = StorageService.getAll();
-    $scope.remove = function (thing) {
-        StorageService.remove(thing);
-    };
+app.controller('signupCtrl', function($scope,$state,RegisterService) {
+    $scope.things = RegisterService.getAll();
+    console.log($scope.things);
 
-	$scope.createUser = function(signUpForm) {
-    	if(signUpForm.$valid) {
-            StorageService.add($scope.signUp);
+	$scope.createUser = function(isValid) {
+    	if(isValid) {
+            RegisterService.add($scope.signUp);
             $state.go('login');
         }
     };
@@ -78,9 +74,10 @@ app.controller('userCtrl', function($scope) {
 	};
 })
 
-app.controller('profileCtrl', function($scope, $location,StorageService,$rootScope,$state) {
+app.controller('profileCtrl', function($scope, $location,$rootScope,$state,ProfileService) {
 
-    $scope.things = StorageService.getAll();
+    $scope.things = ProfileService.getAll();
+    console.log( $scope.things);
 
     $scope.initializeUser=function(){
         $scope.user={};
@@ -100,12 +97,13 @@ app.controller('profileCtrl', function($scope, $location,StorageService,$rootSco
         console.log(value);
     });
 
-    $scope.save=function(profileForm5){
-        if (profileForm5){
+    $scope.save = function(isValid){
+        if (isValid){
             $rootScope.temp = $scope.temp;
             $scope.temp.references.push($scope.reference);
             $scope.temp.references.splice(1,1);
-            StorageService.add($scope.temp);
+            console.log($scope.temp);
+            ProfileService.add($scope.temp);
             $state.go('storage');
         }
     }
@@ -118,18 +116,17 @@ app.controller('profileCtrl', function($scope, $location,StorageService,$rootSco
         $scope.page5 = false;
     }
 
-    $scope.nextPage = function(profileForm1,profileForm2,profileForm3,profileForm4){
+    $scope.nextPage = function(isValid){
         if ($scope.page1 == true){
-            if (profileForm1){
+            if (isValid){
+                $scope.temp = $scope.user;
                 $scope.page1 = false;
                 $scope.page2 = true;
                 $scope.value = "20";
-                var temp = $scope.user;
-                $scope.temp = temp;
             }
         } else
         if ($scope.page2 == true){
-            if (profileForm2){
+            if (isValid){
                 $scope.temp.address.push($scope.address);
                 $scope.temp.address.splice(1,1);
                 $scope.page2 = false;
@@ -138,7 +135,7 @@ app.controller('profileCtrl', function($scope, $location,StorageService,$rootSco
             }
         } else
         if ($scope.page3 == true){
-            if (profileForm3){
+            if (isValid){
                 $scope.temp.qualification_details.push($scope.qualification);
                 $scope.temp.qualification_details.splice(1,1);
                 $scope.page3 = false;
@@ -147,7 +144,7 @@ app.controller('profileCtrl', function($scope, $location,StorageService,$rootSco
             }
         } else
         if ($scope.page4 == true){
-            if (profileForm4){
+            if (isValid){
                 $scope.temp.experience_details.push($scope.experience);
                 $scope.temp.experience_details.splice(1,1);
                 $rootScope.temp = $scope.temp;
@@ -231,12 +228,12 @@ app.controller('profileCtrl', function($scope, $location,StorageService,$rootSco
     initDates();
 })
 
-app.controller('storageCtrl', function($scope, $location,StorageService,$state) {
-    $scope.things = StorageService.getAll();
+app.controller('storageCtrl', function($scope, $location,RegisterService,$state) {
+    $scope.things = RegisterService.getAll();
     console.log($scope.things);
 
     $scope.delete = function(thing){
-        StorageService.remove(thing);
+        RegisterService.remove(thing);
     }
 
     $scope.logOut=function(){

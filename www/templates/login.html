@@ -1,7 +1,7 @@
 <ion-view title="Login" ng-controller="loginCtrl" ng-init="initializeLogin();">
     <ion-content overflow-scroll="true" padding="true" style="background: url(img/wxhXjusvQ726Hccv461l_Lighthouse.jpg) no-repeat center; background-size: cover;" class="has-header">
     <a class="error" ng-if="noEmail">Email Id is not Registered</a>
-        <form class="list" name="loginForm" novalidate="" ng-submit="loginObj(loginForm)">
+        <form class="list" name="loginForm" novalidate="" ng-submit="loginObj(loginForm.$valid)">
             <ion-list>
                 <div ng-class="{'has-error' : loginForm.$submitted && loginForm.email.$invalid, 'no-errors' : loginForm.$submitted && loginForm.email.$valid}">
                     <label class="item item-input trans">
@@ -17,7 +17,7 @@
                 <div ng-class="{'has-error' : loginForm.$submitted && loginForm.password.$invalid, 'no-errors' : loginForm.$submitted && loginForm.password.$valid}">
                 <label class="item item-input trans">
                     <span class="input-label">Password</span>
-                    <input type="{{password}}" name="password" ng-model="login.password" placeholder="Password" required>
+                    <input type="{{password}}" ng-click="removeError();" name="password" ng-model="login.password" placeholder="Password" required>
                 </label>
                 <div class="error-container" ng-if="loginForm.$submitted && loginForm.password.$invalid">
                     <div ng-messages="loginForm.password.$error">

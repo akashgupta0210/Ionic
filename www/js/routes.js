@@ -27,7 +27,7 @@ angular.module('app.routes', [])
     controller: 'userCtrl'
   })
 
-  .state('profileView', {
+  .state('profileEdit', {
     url: '/profile',
     templateUrl: 'templates/profile.html',
     controller: 'profileCtrl'

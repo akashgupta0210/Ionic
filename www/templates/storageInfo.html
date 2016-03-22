@@ -16,7 +16,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-class-odd="'odd'" ng-class-even="'even'" data-ng-repeat="object in things" ng-if="object.password">
+						<tr ng-class-odd="'odd'" ng-class-even="'even'" data-ng-repeat="object in things.users" ng-if="object.password">
 							<td>{{object.email}}</td>
 							<td>{{object.name}}</td>
 							<td>{{object.username}}</td>
