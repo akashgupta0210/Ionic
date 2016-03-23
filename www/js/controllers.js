@@ -4,7 +4,6 @@ var app = angular.module('app.controllers', [])
 app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope) {
 	$scope.password="password";
     $scope.things = RegisterService.getAll();
-    console.log($scope.things);
     
     $scope.initializeLogin = function(){
         $scope.login = {};
@@ -20,30 +19,36 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope)
 
 	$scope.loginObj=function(isValid){
 		if(isValid) {
+            var loggedIn = false;
+            var loggedUser = [];
             for (var i=0;i<$scope.things.users.length;i++){
-                    if ($scope.things.users[i].email){
-                        if ($scope.login.email == $scope.things.users[i].email){
-                            if ($scope.login.password == $scope.things.users[i].password){
-                                $state.go('profileEdit');
-                            } else {
-                                $scope.SignUpError = true;
-                            }
-                        } else {
-                            $scope.noEmail = true;
-                        }
+                if ($scope.login.email == $scope.things.users[i].email){
+                    loggedUser.push($scope.things.users[i])
+                }
+            }
+            if (loggedUser[0]){
+                loggedUser = loggedUser[0];
+                $rootScope.user = loggedUser;
+            } else {
+                $scope.noEmail = true;
+            }
+            if ($scope.login.password == loggedUser.password){
+                loggedIn = true;
+            } else {
+                $scope.SignUpError = true;
+            }
+            if (loggedIn){
+                for (var x=0;x<$scope.things.profile.length;x++){
+                    if ($scope.login.email == $scope.things.profile[x].email){
+                        var storage = true;
                     }
                 }
-            // if (loggedIn){
-            //     for (var x=0;x<$scope.things.length;x++){
-            //         if ($scope.things[x].emailId){
-            //             if (($scope.login.email == $scope.things[x].emailId) && $scope.things[x].dob){
-            //                 $state.go('storage');
-            //             }
-            //         } else {
-            //             $state.go('profileView');
-            //         }
-            //     }
-            // }
+                if (storage){
+                    $state.go('storage');
+                } else {
+                    $state.go('profileEdit');
+                }
+            }
 		}
 	};
 
@@ -54,8 +59,6 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope)
 })
 
 app.controller('signupCtrl', function($scope,$state,RegisterService) {
-    $scope.things = RegisterService.getAll();
-    console.log($scope.things);
 
 	$scope.createUser = function(isValid) {
     	if(isValid) {
@@ -69,15 +72,9 @@ app.controller('signupCtrl', function($scope,$state,RegisterService) {
   	};
 })
 
-app.controller('userCtrl', function($scope) {
-	$scope.user = function(){
-	};
-})
-
 app.controller('profileCtrl', function($scope, $location,$rootScope,$state,ProfileService) {
 
     $scope.things = ProfileService.getAll();
-    console.log( $scope.things);
 
     $scope.initializeUser=function(){
         $scope.user={};
@@ -102,7 +99,6 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
             $rootScope.temp = $scope.temp;
             $scope.temp.references.push($scope.reference);
             $scope.temp.references.splice(1,1);
-            console.log($scope.temp);
             ProfileService.add($scope.temp);
             $state.go('storage');
         }
@@ -156,7 +152,7 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
     };
 
     $scope.prevPage = function(isValid){
-        // if (isValid){
+        if (isValid){
             if ($scope.page2 == true){
                 $scope.page1 = true;
                 $scope.page2 = false;
@@ -173,11 +169,19 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
                 $scope.page4 = true;
                 $scope.page5 = false;
             }
-        // }
+        }
     };
 
     $scope.findOne = function(){
-
+        var loggedInUser = [];
+        console.log($scope.things);
+        for (var i=0;i<$scope.things.users.length;i++){
+            if ($rootScope.user.email == $scope.things.users[i].email){
+                loggedInUser.push($scope.things.users[i]);
+            }
+        }
+        loggedInUser = loggedInUser[0];
+        $scope.user.email = loggedInUser.email
     }
 
     $scope.removeAddress = function (address) {
@@ -230,8 +234,6 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
 
 app.controller('storageCtrl', function($scope, $location,RegisterService,$state) {
     $scope.things = RegisterService.getAll();
-    console.log($scope.things);
-
     $scope.delete = function(thing){
         RegisterService.remove(thing);
     }
@@ -239,4 +241,42 @@ app.controller('storageCtrl', function($scope, $location,RegisterService,$state)
     $scope.logOut=function(){
         $state.go('login');
     }
+})
+
+.controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
+    var options = {timeout: 10000, enableHighAccuracy: true};
+    $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+        var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        var mapOptions = {
+            center: latLng,
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        google.maps.event.addListenerOnce($scope.map, 'idle', function(){
+            var marker = new google.maps.Marker({
+                map: $scope.map,
+                animation: google.maps.Animation.DROP,
+                position: latLng
+            });
+            if ($scope.map.rmiUrl){
+                CurrentLat = $scope.map.rmiUrl.slice(29,39);
+                console.log(CurrentLat);
+                CurrentLon = $scope.map.rmiUrl.slice(40,50);
+                console.log(CurrentLon);
+            }
+            var infoWindow = new google.maps.InfoWindow({
+                content: "Here I am!"
+            }); 
+            google.maps.event.addListener(marker, 'click', function () {
+                infoWindow.open($scope.map, marker);
+            });
+        });
+    }, function(error){
+        console.log("Could not get location");
+    });
+})
+
+.controller('HomeCtrl', function($scope, $state, $cordovaGeolocation) {
+
 });

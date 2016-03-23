@@ -6,7 +6,7 @@
                 <div ng-class="{'has-error' : loginForm.$submitted && loginForm.email.$invalid, 'no-errors' : loginForm.$submitted && loginForm.email.$valid}">
                     <label class="item item-input trans">
                         <span class="input-label">Email</span>
-                        <input type="text" ng-click="removeError();" placeholder="Email" name="email" ng-model="login.email" required>
+                        <input type="email" ng-click="removeError();" placeholder="Email" name="email" ng-model="login.email" required>
                     </label>
                     <div class="error-container" ng-if="loginForm.$submitted && loginForm.email.$invalid">
                         <div ng-messages="loginForm.email.$error">

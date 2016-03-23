@@ -1,40 +1,5 @@
 angular.module('app.services', [])
 
-.factory('LoginService', ['$resource',function($resource){
-}])
-
-.factory('ProfileService',function($localStorage){
-	$localStorage.things = {};
-	$localStorage.things.users=[];
-	$localStorage.things.profile=[];
-	$localStorage = $localStorage.$default({
-  		things: {}
-	});
-	var _getAll = function () {
-  		return $localStorage.things;
-	};
-
-	var _getProfile = function () {
-  		return $localStorage.things.profile;
-	};
-
-	var _add = function (thing) {
-  		$localStorage.things.profile.push(thing);
-	};
-
-	var _remove = function (thing) {
-  		$localStorage.things.profile.splice($localStorage.things.profile.indexOf(thing), 1);
-	};
-
-	return {
-    	getAll: _getAll,
-    	add: _add,
-    	remove: _remove,
-    	getProfile: _getProfile
-  	};
-
-})
-
 .factory ('RegisterService', function ($localStorage) {
 	$localStorage.things = {};
 	$localStorage.things.users=[];
@@ -64,4 +29,34 @@ angular.module('app.services', [])
     	remove: _remove,
     	getUser: _getUser
   	};
+})
+
+.factory('ProfileService',function($localStorage){
+	
+	$localStorage = $localStorage.$default({
+  		things: {}
+	});
+	var _getAll = function () {
+  		return $localStorage.things;
+	};
+
+	var _getProfile = function () {
+  		return $localStorage.things.profile;
+	};
+
+	var _add = function (thing) {
+  		$localStorage.things.profile.push(thing);
+	};
+
+	var _remove = function (thing) {
+  		$localStorage.things.profile.splice($localStorage.things.profile.indexOf(thing), 1);
+	};
+
+	return {
+    	getAll: _getAll,
+    	add: _add,
+    	remove: _remove,
+    	getProfile: _getProfile
+  	};
+
 })

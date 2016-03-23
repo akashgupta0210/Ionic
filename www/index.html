@@ -9,13 +9,12 @@
     <link rel="stylesheet" type="text/css" href="custom/css/custom.css">
     <script src="lib/ionic/js/ionic.bundle.js"></script>
     <script src="lib/angular/angular.min.js"></script>
-    <script src="lib/angular-resource/angular-resource.min.js"></script>
     <script src="lib/angular-messages/angular-messages.min.js"></script>
     <script src="lib/ngstorage/ngStorage.min.js"></script>
-    <script src="lib/angular-mocks/angular-mocks.js"></script>
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgXWNrtV3BZ0YtO6qdavw5slZN5JtibM0&libraries=places,geometry&sensor=false"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
+    <script src="lib/ngCordova/dist/ng-cordova.js"></script>
     <script src="cordova.js"></script>
 
     <!-- compiled css output -->
@@ -26,7 +25,6 @@
     <script src="js/services.js"></script>
     <script src="js/routes.js"></script>
     <script src="js/directives.js"></script>
-    <script src="js/constant.js"></script>
 
     <!-- Only required for Tab projects w/ pages in multiple tabs 
     <script src="lib/ionicuirouter/ionicUIRouter.js"></script>
@@ -34,13 +32,12 @@
 
   </head>
   <body ng-app="app" animation="slide-left-right-ios7">
-  <div>
-    <div>
-        <ion-nav-bar class="bar-stable">
-            <ion-nav-back-button class="button-icon icon ion-ios-arrow-back">Back</ion-nav-back-button>
-        </ion-nav-bar>
-        <ion-nav-view></ion-nav-view>
-    </div>
-</div>
+    <ion-pane>
+        <ion-nav-view>
+            <ion-nav-bar class="bar-stable">
+                <ion-nav-back-button class="button-icon icon ion-ios-arrow-back">Logout</ion-nav-back-button>
+            </ion-nav-bar>
+        </ion-nav-view>
+    </ion-pane>
   </body>
 </html>

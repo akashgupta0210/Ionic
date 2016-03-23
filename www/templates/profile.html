@@ -1,5 +1,8 @@
 <ion-view title="Profile" ng-controller="profileCtrl" data-ng-init="initializeUser(); pages(); findOne();">
-    <ion-content overflow-scroll="true" padding="true"  class="has-header">
+    <ion-header-bar class="bar bar-subheader">
+        <h1 class="title ml80p cursor" data-ng-click="logOut();">Logout</h1>
+    </ion-header-bar>
+    <ion-content overflow-scroll="true" padding="true" style="background: url(img/wxhXjusvQ726Hccv461l_Lighthouse.jpg) no-repeat center; background-size: cover;" class="has-header">
         <div class="page1" ng-if="page1 == true">
             <form class="list" name="profileForm1" novalidate="">
                 <ion-list>
@@ -44,16 +47,11 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-class="{'has-error' : profileForm1.$submitted && profileForm1.email.$invalid, 'no-errors' : profileForm1.$submitted && profileForm1.email.$valid}">
+                    <div>
                         <label class="item item-input trans">
                             <span class="input-label">Email</span>
-                            <input type="text" name="email" ng-model="user.emailId" ng-pattern=" /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/" placeholder="example@example.com" required>
+                            <input class="transDisabled" type="text" name="email" ng-model="user.email" placeholder="example@example.com" disabled>
                         </label>
-                        <div class="error-container" ng-if="profileForm1.$submitted && profileForm1.email.$invalid">
-                            <div ng-messages="profileForm1.email.$error">
-                                <div ng-messages-include="usererror-list.html"></div>
-                            </div>
-                        </div>
                     </div>
                     <div ng-class="{'has-error' : profileForm1.$submitted && profileForm1.phonePre.$invalid, 'no-errors' : profileForm1.$submitted && profileForm1.phonePre.$valid}">
                         <label class="item item-input trans">
@@ -83,9 +81,9 @@
                     <label class="ml128">Address</label>
                     <div class="address" ng-repeat="address in user.address">
                         <div class="" ng-class="{'has-error' : profileForm2.$submitted && profileForm2.addressType.$invalid, 'no-errors' : profileForm2.$submitted && profileForm2.addressType.$valid}">
-                            <label class="item item-input item-select">
+                            <label class="item item-input item-select transF50">
                                 <div class="input-label">Address Type</div>
-                                <select name="addressType" data-ng-model="address.addressType" required>
+                                <select name="addressType" data-ng-model="address.addressType" class="transL50" required>
                                     <option value="" selected disabled>Please Select</option>
                                     <option value="Permanent Address">Permanent</option>
                                     <option value="Temporary Address">Temporary</option>
@@ -205,9 +203,9 @@
                             </div>
                         </div>
                         <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.university.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.university.$valid}">
-                            <label class="item item-input item-select">
+                            <label class="item item-input item-select transF50">
                                 <div class="input-label">Passing Year</div>
-                                <select name="university" data-ng-model="qualification.year_of_passing" required>
+                                <select name="university" data-ng-model="qualification.year_of_passing" class="transL50" required>
                                     <option value="" selected disabled>Please Select</option>
                                     <option ng-repeat="date in dates">{{date}}</option>
                                     <option ng-if="qualification.year_of_passing" selected>{{qualification.year_of_passing}}</option>
@@ -220,9 +218,9 @@
                             </label>
                         </div>
                         <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.grade.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.grade.$valid}">
-                            <label class="item item-input item-select">
+                            <label class="item item-input item-select transF50">
                                 <div class="input-label">Grade</div>
-                                <select name="grade" data-ng-model="qualification.grade_obtained" required>
+                                <select name="grade" data-ng-model="qualification.grade_obtained" class="transL50" required>
                                     <option value="" selected disabled>Please Select</option>
                                     <option value="Percentage">Percentage</option>
                                     <option value="CGPA">CGPA</option>

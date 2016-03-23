@@ -21,14 +21,8 @@ angular.module('app.routes', [])
     controller: 'signupCtrl'
   })
 
-  .state('user', {
-    url: '/user',
-    templateUrl: 'templates/user.html',
-    controller: 'userCtrl'
-  })
-
   .state('profileEdit', {
-    url: '/profile',
+    url: '/profile/edit',
     templateUrl: 'templates/profile.html',
     controller: 'profileCtrl'
   })
@@ -39,8 +33,17 @@ angular.module('app.routes', [])
     controller: 'storageCtrl'
   })
 
-$urlRouterProvider.otherwise('/login')
+  .state('profileMenu', {
+    url: '/profile/menu',
+    templateUrl: 'templates/profileView.html',
+    controller: 'profileCtrl'
+  })
 
-  
+  .state('map', {
+    url: '/map',
+    templateUrl: 'templates/map.html',
+    controller: 'MapCtrl'
+  });
 
+$urlRouterProvider.otherwise('/map')
 });

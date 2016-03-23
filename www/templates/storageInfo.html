@@ -37,10 +37,10 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-class-odd="'odd'" ng-class-even="'even'" data-ng-repeat="object in things" ng-if="object.dob">
+						<tr ng-class-odd="'odd'" ng-class-even="'even'" data-ng-repeat="object in things.profile" ng-if="object.dob">
 							<td>{{object.firstName}}</td>
 							<td>{{object.lastName}}</td>
-							<td>{{object.emailId}}</td>
+							<td>{{object.email}}</td>
 							<td>{{object.dob |date:'dd-MMM-yyyy'}}</td>
 							<td>{{object.phonePre}}-{{object.phoneNumber}}</td>
 							<td><span class="ion-trash-b cursor" ng-click="delete(object);"></span></td>
