@@ -4,6 +4,7 @@ var app = angular.module('app.controllers', [])
 app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,ionicMaterialInk,$timeout) {
 	$scope.password="password";
     $scope.things = RegisterService.getAll();
+    console.log($scope.things);
     /* Hide Header in login page */
         $timeout(function() {
             $scope.$parent.hideHeader();
@@ -44,15 +45,17 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
                 $scope.SignUpError = true;
             }
             if (loggedIn){
-                for (var x=0;x<$scope.things.profile.length;x++){
-                    if ($scope.login.email == $scope.things.profile[x].email){
-                        var storage = true;
+                if ($scope.things.profile){
+                    for (var x=0;x<$scope.things.profile.length;x++){
+                        if ($scope.login.email == $scope.things.profile[x].email){
+                            var storage = true;
+                        }
                     }
                 }
                 if (storage){
                     $state.go('app.profileMenu');
                 } else {
-                    $state.go('profileEdit');
+                    $state.go('app.profileEdit');
                 }
             }
 		}
@@ -65,7 +68,7 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
 })
 
 app.controller('signupCtrl', function($scope,$state,RegisterService,$timeout,ionicMaterialInk) {
-
+    $scope.things = RegisterService.getAll();
     /* Hide Header in login page */
         $timeout(function() {
             $scope.$parent.hideHeader();
@@ -74,8 +77,22 @@ app.controller('signupCtrl', function($scope,$state,RegisterService,$timeout,ion
     /* ************************** */
 	$scope.createUser = function(isValid) {
     	if(isValid) {
-            RegisterService.add($scope.signUp);
-            $state.go('login');
+            var signin = false;
+            if ($scope.things.users.length != "0"){
+                for (var i=0;i<$scope.things.users.length;i++){
+                    if ($scope.signUp.email != $scope.things.users[i].email){
+                        signin = true;
+                    }
+                }
+            } else {
+                signin = true;
+            }
+            if (signin){
+                RegisterService.add($scope.signUp);
+                $state.go('app.login');
+            } else {
+                $scope.error = true;
+            }
         }
     };
 
@@ -84,9 +101,9 @@ app.controller('signupCtrl', function($scope,$state,RegisterService,$timeout,ion
   	};
 })
 
-app.controller('profileCtrl', function($scope, $location,$rootScope,$state,ProfileService) {
+app.controller('profileCtrl', function($scope, $location,$rootScope,$state,ProfileService,RegisterService) {
 
-    $scope.things = ProfileService.getAll();
+    $scope.things = RegisterService.getAll();
 
     $scope.initializeUser=function(){
         $scope.user={};
@@ -112,7 +129,7 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
             $scope.temp.references.push($scope.reference);
             $scope.temp.references.splice(1,1);
             ProfileService.add($scope.temp);
-            $state.go('storage');
+            $state.go('app.profileMenu');
         }
     }
 
@@ -163,8 +180,7 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
         }
     };
 
-    $scope.prevPage = function(isValid){
-        if (isValid){
+    $scope.prevPage = function(){
             if ($scope.page2 == true){
                 $scope.page1 = true;
                 $scope.page2 = false;
@@ -181,7 +197,6 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
                 $scope.page4 = true;
                 $scope.page5 = false;
             }
-        }
     };
 
     $scope.findOne = function(){
@@ -249,12 +264,13 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
 
 app.controller('storageCtrl', function($scope, $location,RegisterService,$state) {
     $scope.things = RegisterService.getAll();
+    console.log($scope.things);
     $scope.delete = function(thing){
         RegisterService.remove(thing);
     }
 
     $scope.logOut=function(){
-        $state.go('login');
+        $state.go('app.login');
     }
 })
 
@@ -292,8 +308,8 @@ app.controller('storageCtrl', function($scope, $location,RegisterService,$state)
     });
 })
 
-.controller('HomeCtrl', function($scope, $state, ionicMaterialMotion, ionicMaterialInk, $timeout,ProfileService) {
-    $scope.things = ProfileService.getAll();
+.controller('HomeCtrl', function($scope, $state, ionicMaterialMotion, ionicMaterialInk, $timeout,RegisterService) {
+    $scope.things = RegisterService.getAll();
     $scope.user = $scope.things.profile[0];
     console.log($scope.user)
     // Set Motion

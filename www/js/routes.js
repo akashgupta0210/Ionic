@@ -60,10 +60,22 @@ angular.module('app.routes', [])
       }
    })
 
-   .state('storage', {
+   .state('app.storage', {
       url: '/storage',
-      templateUrl: 'templates/storageInfo.html',
-      controller: 'storageCtrl'
+      views: {
+         'menuContent': {
+            templateUrl: 'templates/storageInfo.html',
+            controller: 'storageCtrl'
+         },
+         'fabContent': {
+            template: '<button id="fab-profile" class="button button-fab button-fab-bottom-right button-energized-900"><i class="icon ion-plus"></i></button>',
+            controller: function ($timeout) {
+               $timeout(function () {
+                  document.getElementById('fab-profile').classList.toggle('on');
+               }, 800);
+            }
+         }
+      }
    })
 
    .state('app.profileMenu', {
@@ -84,10 +96,76 @@ angular.module('app.routes', [])
       }
    })
 
-   .state('map', {
+   .state('app.map', {
       url: '/map',
-      templateUrl: 'templates/map.html',
-      controller: 'MapCtrl'
+      views: {
+         'menuContent': {
+            templateUrl: 'templates/map.html',
+            controller: 'MapCtrl'
+         },
+         'fabContent': {
+            template: '<button id="fab-profile" class="button button-fab button-fab-bottom-right button-energized-900"><i class="icon ion-plus"></i></button>',
+            controller: function ($timeout) {
+               $timeout(function () {
+                  document.getElementById('fab-profile').classList.toggle('on');
+               }, 800);
+            }
+         }
+      }
+   })
+
+   .state('app.experience', {
+      url: '/profile/experience',
+      views: {
+         'menuContent': {
+            templateUrl: 'templates/experience.html',
+            controller: 'HomeCtrl'
+         },
+         'fabContent': {
+            template: '<button id="fab-profile" class="button button-fab button-fab-bottom-right button-energized-900"><i class="icon ion-plus"></i></button>',
+            controller: function ($timeout) {
+               $timeout(function () {
+                  document.getElementById('fab-profile').classList.toggle('on');
+               }, 800);
+            }
+         }
+      }
+   })
+
+   .state('app.reference', {
+      url: '/profile/reference',
+      views: {
+         'menuContent': {
+            templateUrl: 'templates/refrence.html',
+            controller: 'HomeCtrl'
+         },
+         'fabContent': {
+            template: '<button id="fab-profile" class="button button-fab button-fab-bottom-right button-energized-900"><i class="icon ion-plus"></i></button>',
+            controller: function ($timeout) {
+               $timeout(function () {
+                  document.getElementById('fab-profile').classList.toggle('on');
+               }, 800);
+            }
+         }
+      }
+   })
+
+   .state('app.qualification', {
+      url: '/profile/qualification',
+      views: {
+         'menuContent': {
+            templateUrl: 'templates/qualification.html',
+            controller: 'HomeCtrl'
+         },
+         'fabContent': {
+            template: '<button id="fab-profile" class="button button-fab button-fab-bottom-right button-energized-900"><i class="icon ion-plus"></i></button>',
+            controller: function ($timeout) {
+               $timeout(function () {
+                  document.getElementById('fab-profile').classList.toggle('on');
+               }, 800);
+            }
+         }
+      }
    });
 
    $urlRouterProvider.otherwise('/app/profile/menu')

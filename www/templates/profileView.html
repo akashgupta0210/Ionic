@@ -8,17 +8,17 @@
             </div>
         </div>
         <div class="tabs tabs-dark tabs-icon-top static b375">
-            <a ui-sref="app.activity" class="tab-item">
+            <a ui-sref="app.profileMenu" class="tab-item active">
                 <i class="icon ion-arrow-graph-up-right"></i> Address
             </a>
-            <a ui-sref="app.friends" class="tab-item">
+            <a ui-sref="app.qualification" class="tab-item">
+                <i class="icon ion-images"></i> Qualification
+            </a>
+            <a ui-sref="app.experience" class="tab-item">
                 <i class="icon ion-android-people"></i> Experience
             </a>
-            <a ui-sref="app.gallery" class="tab-item">
+            <a ui-sref="app.reference" class="tab-item">
                 <i class="icon ion-images"></i> Refrence
-            </a>
-            <a ui-sref="app.gallery" class="tab-item">
-                <i class="icon ion-images"></i> Qualification
             </a>
         </div>
         <div class="slide-up">
@@ -32,8 +32,8 @@
                         <p>Da illest illegitimate</p>
                         <i class="icon ion-chatbubble muted"></i>
                     </a> -->
-                    <a class="item item-icon-right mb-18 transparent">Date of Birth: {{user.dob| date:'dd-MMM-yyyy'}}</a>
                     <a class="item item-icon-right mb-18 transparent">Email: {{user.email}}</a>
+                    <a class="item item-icon-right mb-18 transparent">Date of Birth: {{user.dob| date:'dd-MMM-yyyy'}}</a>
                     <a class="item item-icon-right mb-18 transparent">Gender: {{user.gender}}</a>
                     <a class="item item-icon-right mb-18 transparent">Contact No: {{user.phonePre}}-{{user.phoneNumber}}</a>
                 </div>
@@ -43,10 +43,8 @@
                     <a class="item item-icon-right mb-18 transparent ml190">{{address.addressType}}</a>
                     <a class="item item-icon-right mb-18 transparent">{{address.addressLine1}}</a>
                     <a class="item item-icon-right mb-18 transparent">{{address.addressLine2}}</a>
-                    <a class="item item-icon-right mb-18 transparent">{{address.city}}</a>
-                    <a class="item item-icon-right mb-18 transparent">{{address.state}}</a>
-                    <a class="item item-icon-right mb-18 transparent">{{address.pincode}}</a>
-                    <a class="item item-icon-right mb-18 transparent">{{address.country}}</a>
+                    <a class="item item-icon-right mb-18 transparent">{{address.city}}&nbsp;{{address.state}}</a>
+                    <a class="item item-icon-right mb-18 transparent">{{address.pincode}}&nbsp;{{address.country}}</a>
                 </div>
             </div>
         </div>
