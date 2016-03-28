@@ -1,10 +1,8 @@
 var app = angular.module('app.controllers', [])
-  
 
-app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,ionicMaterialInk,$timeout) {
+app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,ionicMaterialInk,$timeout,AuthenticationService) {
 	$scope.password="password";
     $scope.things = RegisterService.getAll();
-    console.log($scope.things);
     /* Hide Header in login page */
         $timeout(function() {
             $scope.$parent.hideHeader();
@@ -64,7 +62,21 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
     $scope.removeError = function(){
         $scope.SignUpError = false;
         $scope.noEmail = false;
-    }
+    };
+
+    $scope.loginHere = function () {
+        $scope.dataLoading = true;
+        AuthenticationService.Login($scope.login.email, $scope.login.password, function(response) {
+            if(response.success) {
+                AuthenticationService.SetCredentials($scope.login.email, $scope.login.password);
+                $state.go('app.profileMenu');
+            } else {
+                $scope.error = response.message;
+                $scope.dataLoading = false;
+            }
+        });
+    };
+
 })
 
 app.controller('signupCtrl', function($scope,$state,RegisterService,$timeout,ionicMaterialInk) {
@@ -312,10 +324,9 @@ app.controller('storageCtrl', function($scope, $location,ProfileService,$state,R
     });
 })
 
-.controller('HomeCtrl', function($scope, $state, ionicMaterialMotion, ionicMaterialInk, $timeout,RegisterService) {
+.controller('HomeCtrl', function($scope, $state, ionicMaterialMotion, ionicMaterialInk, $timeout,RegisterService,AuthenticationService) {
     $scope.things = RegisterService.getAll();
     $scope.user = $scope.things.profile[0];
-    console.log($scope.user)
     // Set Motion
     $timeout(function() {
         ionicMaterialMotion.slideUp({
@@ -340,18 +351,20 @@ app.controller('storageCtrl', function($scope, $location,ProfileService,$state,R
         var temporary = false;
         var Office = {};
         var Temporary = {};
-        for (var i=0;i<$scope.user.address.length;i++){
-            if ($scope.user.address[i].addressType == "Permanent Address"){
-                permanent = true;
-                Permanent = $scope.user.address[i];
-            } else
-            if ($scope.user.address[i].addressType == "Office Address"){
-                office = true;
-                Office = $scope.user.address[i];
-            } else
-            if ($scope.user.address[i].addressType == "Temporary Address"){
-                temporary = true;
-                Temporary = $scope.user.address[i];
+        if ($scope.user){
+            for (var i=0;i<$scope.user.address.length;i++){
+                if ($scope.user.address[i].addressType == "Permanent Address"){
+                    permanent = true;
+                    Permanent = $scope.user.address[i];
+                } else
+                if ($scope.user.address[i].addressType == "Office Address"){
+                    office = true;
+                    Office = $scope.user.address[i];
+                } else
+                if ($scope.user.address[i].addressType == "Temporary Address"){
+                    temporary = true;
+                    Temporary = $scope.user.address[i];
+                }
             }
         }
 
@@ -367,6 +380,11 @@ app.controller('storageCtrl', function($scope, $location,ProfileService,$state,R
     };
 })
 
+.controller('logCtrl', function($scope, AuthenticationService) {
+    $scope.logOut=function(){
+        AuthenticationService.ClearCredentials();
+    }
+})
 
 .controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout) {
     // Form data for the login modal

@@ -1,7 +1,7 @@
 <ion-view view-title="Login" ng-controller="loginCtrl" ng-init="initializeLogin();">
     <ion-content overflow-scroll="true" padding="true" style="background: url(img/wxhXjusvQ726Hccv461l_Lighthouse.jpg) no-repeat center; background-size: cover;" class="has-header">
     <a class="error" ng-if="noEmail">Email Id is not Registered</a>
-        <form class="list" name="loginForm" novalidate="" ng-submit="loginObj(loginForm.$valid)">
+        <form class="list" name="loginForm" novalidate="" ng-submit="loginHere(loginForm.$valid)">
             <ion-list>
                 <div ng-class="{'has-error' : loginForm.$submitted && loginForm.email.$invalid, 'no-errors' : loginForm.$submitted && loginForm.email.$valid}">
                     <label class="item item-input trans">
