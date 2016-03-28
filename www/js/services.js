@@ -59,33 +59,41 @@ angular.module('app.services', [])
 
 .factory('AuthenticationService' ,function (Base64, $http, $rootScope, $timeout,$state,$localStorage) {
         var service = {};
+        var loggedIn = false;
+        var loggedUser = [];
         service.Login = function (username, password, callback) {
-            /* Dummy authentication for testing, uses $timeout to simulate api call
-             ----------------------------------------------*/
-            $timeout(function(){
-                var response = { success: username === 'a@a.com' && password === 'test' };
-                if(!response.success) {
+        	var response={}
+        	/* Dummy authentication for testing, uses $timeout to simulate api call*/
+        	$timeout(function(){
+	        	for (var i=0;i<$localStorage.things.users.length;i++){
+	                if (username == $localStorage.things.users[i].email){
+	                    loggedUser.push($localStorage.things.users[i])
+	                }
+	            }
+	            var response = { success: username === loggedUser[0].email && password === loggedUser[0].password };
+	            if(!response.success) {
                     response.message = 'Username or password is incorrect';
+                } else {
+                	response.Obj=loggedUser[0];
                 }
                 callback(response);
             }, 1000);
             /* Use this for real authentication
              ----------------------------------------------*/
-            //$http.post('/api/authenticate', { username: username, password: password })
+            // $http.post('/api/authenticate', { username: username, password: password })
             //    .success(function (response) {
             //        callback(response);
             //    });
         };
+
         service.SetCredentials = function (username, password) {
             var authdata = Base64.encode(username + ':' + password);
-  
             $rootScope.globals = {
                 currentUser: {
                     username: username,
                     authdata: authdata
                 }
             };
-
             $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
             $localStorage.cookies = $rootScope.globals;
         };

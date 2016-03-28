@@ -65,14 +65,35 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
     };
 
     $scope.loginHere = function () {
-        $scope.dataLoading = true;
+        var loggedIn = false;
+        var loggedUser = [];
         AuthenticationService.Login($scope.login.email, $scope.login.password, function(response) {
+            console.log(response);
             if(response.success) {
                 AuthenticationService.SetCredentials($scope.login.email, $scope.login.password);
-                $state.go('app.profileMenu');
+            if (response){
+                $rootScope.user = response;
+            } else {
+                $scope.noEmail = true;
+            }
+            if (response){
+                if ($scope.things.profile){
+                    for (var x=0;x<$scope.things.profile.length;x++){
+                        if (response.email == $scope.things.profile[x].email){
+                            var storage = true;
+                        }
+                    }
+                }
+                if (storage){
+                    $state.go('app.profileMenu');
+                } else {
+                    $state.go('app.profileEdit');
+                }
+            }
+
             } else {
                 $scope.error = response.message;
-                $scope.dataLoading = false;
+                $scope.SignUpError = true;   
             }
         });
     };
@@ -81,6 +102,7 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
 
 app.controller('signupCtrl', function($scope,$state,RegisterService,$timeout,ionicMaterialInk) {
     $scope.things = RegisterService.getAll();
+    console.log($scope.things);
     /* Hide Header in login page */
         $timeout(function() {
             $scope.$parent.hideHeader();
@@ -215,6 +237,7 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
         var loggedInUser = [];
         for (var i=0;i<$scope.things.users.length;i++){
             if ($rootScope.user){
+                console.log($rootScope.user);
                 if ($rootScope.user.email == $scope.things.users[i].email){
                     loggedInUser.push($scope.things.users[i]);
                 }
