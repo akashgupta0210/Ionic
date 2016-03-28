@@ -52,7 +52,7 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
                 if (storage){
                     $state.go('app.profileMenu');
                 } else {
-                    $state.go('profileEdit');
+                    $state.go('app.profileEdit');
                 }
             }
 		}
@@ -75,7 +75,7 @@ app.controller('signupCtrl', function($scope,$state,RegisterService,$timeout,ion
 	$scope.createUser = function(isValid) {
     	if(isValid) {
             RegisterService.add($scope.signUp);
-            $state.go('login');
+            $state.go('app.login');
         }
     };
 
@@ -112,7 +112,7 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
             $scope.temp.references.push($scope.reference);
             $scope.temp.references.splice(1,1);
             ProfileService.add($scope.temp);
-            $state.go('storage');
+            $state.go('app.profileMenu');
         }
     }
 
@@ -247,10 +247,14 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
     initDates();
 })
 
-app.controller('storageCtrl', function($scope, $location,RegisterService,$state) {
+app.controller('storageCtrl', function($scope, $location,ProfileService,$state,RegisterService) {
     $scope.things = RegisterService.getAll();
     $scope.delete = function(thing){
-        RegisterService.remove(thing);
+        if (thing.dob){
+            ProfileService.remove(thing);
+        } else {
+            RegisterService.remove(thing);
+        }
     }
 
     $scope.logOut=function(){
