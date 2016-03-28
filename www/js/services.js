@@ -32,13 +32,10 @@ angular.module('app.services', [])
 })
 
 .factory('ProfileService',function($localStorage){
-	
+	$localStorage.things.profile=[];
 	$localStorage = $localStorage.$default({
   		things: {}
 	});
-	var _getAll = function () {
-  		return $localStorage.things;
-	};
 
 	var _getProfile = function () {
   		return $localStorage.things.profile;
@@ -53,7 +50,6 @@ angular.module('app.services', [])
 	};
 
 	return {
-    	getAll: _getAll,
     	add: _add,
     	remove: _remove,
     	getProfile: _getProfile
