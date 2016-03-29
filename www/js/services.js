@@ -70,12 +70,16 @@ angular.module('app.services', [])
 	                    loggedUser.push($localStorage.things.users[i])
 	                }
 	            }
-	            var response = { success: username === loggedUser[0].email && password === loggedUser[0].password };
-	            if(!response.success) {
-                    response.message = 'Username or password is incorrect';
-                } else {
-                	response.Obj=loggedUser[0];
-                }
+	            if (loggedUser.length){
+		            response = { success: username === loggedUser[0].email && password === loggedUser[0].password };
+		            if(!response.success) {
+	                    response.message = 'Password is incorrect!';
+	                } else {
+	                	response.Obj=loggedUser[0];
+	                }
+	            } else {
+	            	response.message="Email Id not registered!";
+	            }
                 callback(response);
             }, 1000);
             /* Use this for real authentication

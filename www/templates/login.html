@@ -1,6 +1,6 @@
 <ion-view view-title="Login" ng-controller="loginCtrl" ng-init="initializeLogin();">
     <ion-content overflow-scroll="true" padding="true" style="background: url(img/wxhXjusvQ726Hccv461l_Lighthouse.jpg) no-repeat center; background-size: cover;" class="has-header">
-    <a class="error" ng-if="noEmail">Email Id is not Registered</a>
+        <p class="error">{{error}}</p>
         <form class="list" name="loginForm" novalidate="" ng-submit="loginHere(loginForm.$valid)">
             <ion-list>
                 <div ng-class="{'has-error' : loginForm.$submitted && loginForm.email.$invalid, 'no-errors' : loginForm.$submitted && loginForm.email.$valid}">
@@ -26,7 +26,7 @@
                 </div>
             </ion-list>
             <ion-checkbox class="trans" ng-click="showPass();">Show Password</ion-checkbox>
-            <a class="error" ng-if="SignUpError">Invalid Password!</a>
+            <!-- <a class="error" ng-if="SignUpError">Invalid Password!</a> -->
             <a id="login-button3" style="color:#000000;" class="button button-stable button-small button-block button-clear">Forgot Password</a>
             <button id="login-button1" type="submit" class="button button-stable  button-block">Login</button>
         </form>

@@ -7,8 +7,8 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
         $timeout(function() {
             $scope.$parent.hideHeader();
         }, 0);
-        ionicMaterialInk.displayEffect();
     /* ************************** */
+    ionicMaterialInk.displayEffect();
     
     $scope.initializeLogin = function(){
         $scope.login = {};
@@ -22,80 +22,41 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
         }
     };
 
-	$scope.loginObj=function(isValid){
-		if(isValid) {
-            var loggedIn = false;
-            var loggedUser = [];
-            for (var i=0;i<$scope.things.users.length;i++){
-                if ($scope.login.email == $scope.things.users[i].email){
-                    loggedUser.push($scope.things.users[i])
-                }
-            }
-            if (loggedUser[0]){
-                loggedUser = loggedUser[0];
-                $rootScope.user = loggedUser;
-            } else {
-                $scope.noEmail = true;
-            }
-            if ($scope.login.password == loggedUser.password){
-                loggedIn = true;
-            } else {
-                $scope.SignUpError = true;
-            }
-            if (loggedIn){
-                if ($scope.things.profile){
-                    for (var x=0;x<$scope.things.profile.length;x++){
-                        if ($scope.login.email == $scope.things.profile[x].email){
-                            var storage = true;
-                        }
-                    }
-                }
-                if (storage){
-                    $state.go('app.profileMenu');
-                } else {
-                    $state.go('app.profileEdit');
-                }
-            }
-		}
-	};
-
     $scope.removeError = function(){
         $scope.SignUpError = false;
         $scope.noEmail = false;
     };
 
-    $scope.loginHere = function () {
+    $scope.loginHere = function (isValid) {
         var loggedIn = false;
         var loggedUser = [];
-        AuthenticationService.Login($scope.login.email, $scope.login.password, function(response) {
-            console.log(response);
-            if(response.success) {
-                AuthenticationService.SetCredentials($scope.login.email, $scope.login.password);
-            if (response){
-                $rootScope.user = response;
-            } else {
-                $scope.noEmail = true;
-            }
-            if (response){
-                if ($scope.things.profile){
-                    for (var x=0;x<$scope.things.profile.length;x++){
-                        if (response.email == $scope.things.profile[x].email){
-                            var storage = true;
+        if (isValid){
+            AuthenticationService.Login($scope.login.email, $scope.login.password, function(response) {
+                console.log(response);
+                if(response.success) {
+                    AuthenticationService.SetCredentials($scope.login.email, $scope.login.password);
+                    if (response.Obj){
+                        $rootScope.user = response.Obj;
+                    }
+                    if (response){
+                        if ($scope.things.profile){
+                            for (var x=0;x<$scope.things.profile.length;x++){
+                                if (response.email == $scope.things.profile[x].email){
+                                    var storage = true;
+                                }
+                            }
+                        }
+                        if (storage){
+                            $state.go('app.profileMenu');
+                        } else {
+                            $state.go('app.profileEdit');
                         }
                     }
-                }
-                if (storage){
-                    $state.go('app.profileMenu');
                 } else {
-                    $state.go('app.profileEdit');
+                    $scope.error = response.message;
                 }
-            }
-
-            } else {
-                $scope.error = response.message;
-                $scope.SignUpError = true;   
-            }
-        });
+            });
+        }
     };
 
 })
