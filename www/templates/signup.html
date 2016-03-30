@@ -1,11 +1,11 @@
 <ion-view title="Signup" ng-controller="signupCtrl" ng-init = "initializeSignup();">
     <ion-content overflow-scroll="true" padding="true" scroll="false" class="has-header" style="background: url(img/wxhXjusvQ726Hccv461l_Lighthouse.jpg) no-repeat center; background-size: cover;">
-        <form class="list" name="signUpForm" novalidate="" ng-submit="createUser(signUpForm)">
+        <form class="list" name="signUpForm" novalidate="" ng-submit="createUser(signUpForm.$valid)">
             <ion-list>
                 <div ng-class="{'has-error' : signUpForm.$submitted && signUpForm.name.$invalid, 'no-errors' : signUpForm.$submitted && signUpForm.name.$valid}">
                     <label class="item item-input trans">
                         <span class="input-label">Name</span>
-                        <input name="name" ng-model="signUp.name" type="text" placeholder="Name" required>
+                        <input name="name" ng-model="signUp.name" type="text" placeholder=&nbsp;&nbsp;Name required>
                     </label>
                     <div class="error-container" ng-if="signUpForm.$submitted && signUpForm.name.$invalid">
                         <div ng-messages="signUpForm.name.$error">
@@ -16,7 +16,7 @@
                 <div ng-class="{'has-error' : signUpForm.$submitted && signUpForm.username.$invalid, 'no-errors' : signUpForm.$submitted && signUpForm.username.$valid}">
                     <label class="item item-input trans">
                         <span class="input-label">Username</span>
-                        <input name="username" ng-model="signUp.username" type="text" placeholder="Username" required>
+                        <input name="username" ng-model="signUp.username" type="text" placeholder=&nbsp;&nbsp;Username required>
                     </label>
                     <div class="error-container" ng-if="signUpForm.$submitted && signUpForm.username.$invalid">
                         <div ng-messages="signUpForm.username.$error">
@@ -27,7 +27,7 @@
                 <div ng-class="{'has-error' : signUpForm.$submitted && signUpForm.password.$invalid, 'no-errors' : signUpForm.$submitted && signUpForm.password.$valid}">
                     <label class="item item-input trans">
                         <span class="input-label">Password</span>
-                        <input type="password" ng-model="signUp.password" placeholder="Password" name="password" required>
+                        <input type="password" ng-model="signUp.password" placeholder=&nbsp;&nbsp;Password name="password" required>
                     </label>
                     <div class="error-container" ng-if="signUpForm.$submitted && signUpForm.password.$invalid">
                         <div ng-messages="signUpForm.password.$error">
@@ -38,11 +38,15 @@
                 <div ng-class="{'has-error' : signUpForm.$submitted && signUpForm.email.$invalid, 'no-errors' : signUpForm.$submitted && signUpForm.email.$valid}">
                     <label class="item item-input trans">
                         <span class="input-label">Email</span>
-                        <input name="email" ng-model="signUp.email" type="email" placeholder="Email" required>
+                        <input name="email" ng-model="signUp.email" type="email" placeholder=&nbsp;&nbsp;Email required>
                     </label>
+                    </div>
                     <div class="error-container" ng-if="signUpForm.$submitted && signUpForm.email.$invalid">
-                        <div ng-messages="signUpForm.email.$error">
+                        <div ng-if="signUpForm.email.$error.required" ng-messages="signUpForm.email.$error.required">
                             <div ng-messages-include="error-list.html"></div>
+                        </div>
+                        <div ng-if="(signUpForm.email.$invalid && !signUpForm.email.$pristine) && !signUpForm.email.$error.required" ng-messages="signUpForm.email.$invalid">
+                            <div ng-messages-include="loginerror-list1.html"></div>
                         </div>
                     </div>
                 </div>
@@ -51,7 +55,7 @@
             <button type="submit" id="signup-button4" class="button button-stable button-block">Sign up</button>
         </form>
         <ion-list>
-            <a ui-sref="app.login" style="color:#000000;" class="button button-positive  button-block button-clear">Already Have Account Click Here</a>
+            <a ui-sref="app.login" style="color:#000000;" class="button button-positive button-block button-clear pt5">Already Have Account Click Here</a>
         </ion-list>
     </ion-content>
 </ion-view>
@@ -60,5 +64,11 @@
     <div class="error" ng-messages="required">
       <i class="ion-information-circled"></i> 
       This field is required!
+    </div>
+</script>
+<script id="loginerror-list1.html" type="text/ng-template">  
+    <div class="error" ng-messages="$invalid">
+        <i class="ion-information-circled"></i> 
+        Invalid Email!
     </div>
 </script>

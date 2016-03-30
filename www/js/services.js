@@ -18,6 +18,14 @@ angular.module('app.services', [])
 	var _add = function (thing) {
   		$localStorage.things.users.push(thing);
 	};
+    
+    var _update = function(thing){
+        for (var i=0;i<$localStorage.things.users.length;i++){
+            if (thing.emailId == $localStorage.things.users[i].emailId){
+                $localStorage.things.users[i].password = thing.password;
+            }
+        }
+    };
 
 	var _remove = function (thing) {
   		$localStorage.things.users.splice($localStorage.things.users.indexOf(thing), 1);
@@ -27,7 +35,8 @@ angular.module('app.services', [])
     	getAll: _getAll,
     	add: _add,
     	remove: _remove,
-    	getUser: _getUser
+    	getUser: _getUser,
+        update: _update
   	};
 })
 
@@ -36,7 +45,11 @@ angular.module('app.services', [])
 	$localStorage = $localStorage.$default({
   		things: {}
 	});
-
+    
+    var _getAll = function () {
+  		return $localStorage;
+	};
+    
 	var _getProfile = function () {
   		return $localStorage.things.profile;
 	};
@@ -52,7 +65,8 @@ angular.module('app.services', [])
 	return {
     	add: _add,
     	remove: _remove,
-    	getProfile: _getProfile
+    	getProfile: _getProfile,
+        getAll: _getAll
   	};
 })
 
@@ -109,6 +123,28 @@ angular.module('app.services', [])
 	        }
             $http.defaults.headers.common.Authorization = 'Basic ';
             $state.go('app.login');
+        };
+    
+        service.resetPass = function (username,callback) {
+        	var response={}
+            $timeout(function(){
+                if ($localStorage.things.users.length){
+                    for (var i=0;i<$localStorage.things.users.length;i++){
+                        if (username == $localStorage.things.users[i].email){
+                            loggedUser.push($localStorage.things.users[i])
+                        }
+                    }
+                    if (loggedUser.length){
+                        response = { success: username === loggedUser[0].email};
+                        if(response.success) {
+                           response.Obj=loggedUser[0];
+                        }
+                    } else {
+	                   response.message = 'Email Id is not registered!';
+	                }
+                }
+                callback(response);
+            }, 1000);
         };
   
         return service;

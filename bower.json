@@ -2,7 +2,8 @@
   "name": "HelloIonic",
   "private": "true",
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.2.4"
+    "ionic": "driftyco/ionic-bower#1.2.4",
+    "ionic-platform-web-client": "^0.7.1"
   },
   "resolutions": {
     "angular": "^1.5.2"
@@ -12,6 +13,7 @@
     "angular-messages": "^1.5.2",
     "angular-google-maps": "^2.3.2",
     "angular-cookies": "^1.5.2",
-    "angular-route": "^1.5.3"
+    "angular-route": "^1.5.3",
+    "ionic-service-core": "^0.1.10"
   }
 }

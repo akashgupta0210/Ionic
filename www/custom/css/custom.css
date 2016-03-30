@@ -55,8 +55,8 @@
 	margin-left: 128px;
 }
 
-.ml92{
-	margin-left: 92px;
+.ml80{
+	margin-left: 90px;
 }
 
 .ml120{
@@ -69,6 +69,8 @@
 
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
 	font-size:12px!important;
+    box-shadow: inset 0 1px 2px rgba(142, 149, 161, 0.35), 0px 1px 15px rgba(83, 81, 81, 0.5);
+    margin-right: 20px!important;
 }
 
 .cursor{
@@ -101,7 +103,7 @@ color: #6A6666 !important;
  
 #map {
     width: 100%;
-    height: 80%;
+    height: 90%;
 }
 
 .angular-google-map-container { 
@@ -146,8 +148,8 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 	background-color: rgba(0,0,0,0.0)!important;
 }
 
-.b375{
-	margin-bottom: 375px;
+.b419{
+	margin-bottom: 419px;
 }
 
 .mt49{
@@ -170,4 +172,25 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 
 .loginform > .hero.slide-up *, .slide-up * {
 	opacity: 1!important;
+}
+
+.pt5{
+    padding-top: 5px!important;
+}
+
+.showPass{
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    padding-top: 10px!important;
+    padding-bottom: 10px!important;
+}
+
+.dateclass.placeholderclass::before{
+width:100%;
+content:attr(placeholder);
+}
+
+.dateclass.placeholderclass:hover::before{
+width:0%;
+content:"";
 }

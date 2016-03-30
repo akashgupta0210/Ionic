@@ -3,6 +3,7 @@ var app = angular.module('app.controllers', [])
 app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,ionicMaterialInk,$timeout,AuthenticationService) {
 	$scope.password="password";
     $scope.things = RegisterService.getAll();
+    console.log($scope.things);
     /* Hide Header in login page */
         $timeout(function() {
             $scope.$parent.hideHeader();
@@ -13,6 +14,12 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
     $scope.initializeLogin = function(){
         $scope.login = {};
     };
+    
+    $scope.initializePass=function(){
+        $scope.pass={};
+        $scope.respassForm=false;
+        $scope.passEmailButton=true;
+    };
 
     $scope.showPass=function(){
         if ($scope.password == "password"){
@@ -21,11 +28,29 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
             $scope.password="password";
         }
     };
-
-    $scope.removeError = function(){
-        $scope.SignUpError = false;
-        $scope.noEmail = false;
+    
+    $scope.passWord=function(isValid){
+        if (isValid){
+            AuthenticationService.resetPass($scope.pass.email, function(response) {
+                if(response.success) {
+                    $scope.respassForm=true;
+                    $scope.passEmailButton=false;
+                    $scope.passPasswordButton=true;
+                    $rootScope.resetpassUser = response.Obj;
+                }
+            })
+        }
     };
+    
+    $scope.rpass=function(isValid){
+        if (isValid){
+            if ($rootScope.resetpassUser){
+                console.log($scope.pass);
+                RegisterService.update($scope.pass)
+                $state.go('app.login');
+            }
+        }
+    }
 
     $scope.loginHere = function (isValid) {
         var loggedIn = false;
@@ -41,7 +66,7 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
                     if (response){
                         if ($scope.things.profile){
                             for (var x=0;x<$scope.things.profile.length;x++){
-                                if (response.email == $scope.things.profile[x].email){
+                                if (response.Obj.email == $scope.things.profile[x].email){
                                     var storage = true;
                                 }
                             }
@@ -63,7 +88,7 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
 
 app.controller('signupCtrl', function($scope,$state,RegisterService,$timeout,ionicMaterialInk) {
     $scope.things = RegisterService.getAll();
-    console.log($scope.things);
+    console.log($scope.things); 
     /* Hide Header in login page */
         $timeout(function() {
             $scope.$parent.hideHeader();
@@ -77,9 +102,11 @@ app.controller('signupCtrl', function($scope,$state,RegisterService,$timeout,ion
                 for (var i=0;i<$scope.things.users.length;i++){
                     if ($scope.signUp.email != $scope.things.users[i].email){
                         signin = true;
+                        console.log("a");
                     }
                 }
             } else {
+                console.log("a");
                 signin = true;
             }
             if (signin){
@@ -102,6 +129,9 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
 
     $scope.initializeUser=function(){
         $scope.user={};
+        $scope.user = {
+            gender: 'male'
+        };
         $scope.user.address=[];
         $scope.user.qualification_details=[];
         $scope.user.experience_details=[];
@@ -364,10 +394,18 @@ app.controller('storageCtrl', function($scope, $location,ProfileService,$state,R
     };
 })
 
-.controller('logCtrl', function($scope, AuthenticationService) {
+.controller('logCtrl', function($scope, AuthenticationService,ProfileService) {
     $scope.logOut=function(){
         AuthenticationService.ClearCredentials();
-    }
+        $scope.visible=false;
+    };
+//    $scope.initialize=function(){
+//        if (ProfileService.getAll().cookies){
+//            $scope.visible=true;
+//        } else {
+//            $scope.visible=false;
+//        }
+//    }
 })
 
 .controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout) {

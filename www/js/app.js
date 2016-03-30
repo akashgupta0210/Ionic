@@ -2,7 +2,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
 
 .run(function($ionicPlatform,$rootScope,$location,$http,$localStorage) {
   $ionicPlatform.ready(function() {
-    $rootScope.globals = $localStorage.cookies || {};
+    $rootScope.globals = $localStorage.cookies || {};      
     
     if ($rootScope.globals.currentUser) {
       $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line

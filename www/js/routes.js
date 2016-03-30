@@ -27,6 +27,19 @@ angular.module('app.routes', [])
          }
       }
    })
+   
+   .state('app.resetPass', {
+      url: '/resetPass',
+      views: {
+         'menuContent': {
+            templateUrl: 'templates/password.html',
+            controller: 'loginCtrl'
+         },
+         'fabContent': {
+            template: ''
+         }
+      }
+   })
 
    .state('app.signup', {
       url: '/signup',
@@ -167,5 +180,5 @@ angular.module('app.routes', [])
       }
    });
 
-   $urlRouterProvider.otherwise('/app/login')
+   $urlRouterProvider.otherwise('/app/profile/edit')
 });

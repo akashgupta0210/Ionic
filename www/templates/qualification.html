@@ -1,0 +1,42 @@
+<ion-view title="Qualification" ng-controller="HomeCtrl" data-ng-init="address();">
+    <ion-content ng-class="{expanded:$scope.isExpanded}">
+        <div class="hero slide-up" style="background-image: url('img/wxhXjusvQ726Hccv461l_Lighthouse.jpg');">
+            <div class="content">
+                <div class="avatar" style="background-image: url('img/daenerys.jpg');"></div>
+                <h3><a class="light">{{user.firstName}}&nbsp;{{user.lastName}}</a></h3>
+                <h4>{{address.state}}&nbsp;{{address.country}}</h4>
+            </div>
+        </div>
+        <div class="tabs tabs-dark tabs-icon-top static b419">
+            <a ui-sref="app.profileMenu" class="tab-item active">
+                <i class="icon ion-arrow-graph-up-right"></i> Address
+            </a>
+            <a ui-sref="app.qualification" class="tab-item">
+                <i class="icon ion-android-people"></i> Qualification
+            </a>
+            <a ui-sref="app.experience" class="tab-item">
+                <i class="icon ion-images"></i> Experience
+            </a>
+            <a ui-sref="app.reference" class="tab-item">
+                <i class="icon ion-images"></i> Refrence
+            </a>
+            <a ui-sref="app.map" class="tab-item">
+                <i class="icon ion-images"></i> Current Location
+            </a>
+        </div>
+        <div class="slide-up">
+            <div class="mt49" style="background: url(img/wxhXjusvQ726Hccv461l_Sky.jpg) no-repeat center; background-size: cover;">
+                <h4 class="padding mb-18">Qualification</h4>
+                <hr class="pi">
+                <div class="list animate-fade-slide-in-right" ng-repeat = "qualification in user.qualification_details">
+                    <a class="item item-icon-right mb-18 transparent">Exam:&nbsp;{{qualification.examination}}</a>
+                    <a class="item item-icon-right mb-18 transparent">Institute:&nbsp;{{qualification.institution}}</a>
+                    <a class="item item-icon-right mb-18 transparent">Grade:&nbsp;{{qualification.grade_obtained}}</a>
+                    <a class="item item-icon-right mb-18 transparent">Marks:&nbsp;{{qualification.percentage_of_marks}}</a>
+                    <a class="item item-icon-right mb-18 transparent">Passing year:&nbsp;{{qualification.year_of_passing}}</a>
+                    <a class="item item-icon-right mb-18 transparent" ng-if="qualification.specialisation">Any Specialization:&nbsp;{{qualification.specialisation}}</a>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

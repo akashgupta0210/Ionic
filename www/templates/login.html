@@ -6,18 +6,21 @@
                 <div ng-class="{'has-error' : loginForm.$submitted && loginForm.email.$invalid, 'no-errors' : loginForm.$submitted && loginForm.email.$valid}">
                     <label class="item item-input trans">
                         <span class="input-label">Email</span>
-                        <input type="email" ng-click="removeError();" placeholder="Email" name="email" ng-model="login.email" required>
+                        <input type="email" placeholder=&nbsp;&nbsp;Email name="email" ng-model="login.email" required>
                     </label>
                     <div class="error-container" ng-if="loginForm.$submitted && loginForm.email.$invalid">
-                        <div ng-messages="loginForm.email.$error">
+                        <div ng-if="loginForm.email.$error.required" ng-messages="loginForm.email.$error.required">
                             <div ng-messages-include="loginerror-list.html"></div>
+                        </div>
+                        <div ng-if="(loginForm.email.$invalid && !loginForm.email.$pristine) && !loginForm.email.$error.required" ng-messages="loginForm.email.$invalid && !loginForm.email.$pristine">
+                            <div ng-messages-include="loginerror-list1.html"></div>
                         </div>
                     </div>
                 </div>
                 <div ng-class="{'has-error' : loginForm.$submitted && loginForm.password.$invalid, 'no-errors' : loginForm.$submitted && loginForm.password.$valid}">
                 <label class="item item-input trans">
                     <span class="input-label">Password</span>
-                    <input type="{{password}}" ng-click="removeError();" name="password" ng-model="login.password" placeholder="Password" required>
+                    <input type="{{password}}" name="password" ng-model="login.password" placeholder=&nbsp;&nbsp;Password required>
                 </label>
                 <div class="error-container" ng-if="loginForm.$submitted && loginForm.password.$invalid">
                     <div ng-messages="loginForm.password.$error">
@@ -25,13 +28,13 @@
                     </div>
                 </div>
             </ion-list>
-            <ion-checkbox class="trans" ng-click="showPass();">Show Password</ion-checkbox>
+            <ion-checkbox class="trans showPass" ng-click="showPass();">Show Password</ion-checkbox>
             <!-- <a class="error" ng-if="SignUpError">Invalid Password!</a> -->
-            <a id="login-button3" style="color:#000000;" class="button button-stable button-small button-block button-clear">Forgot Password</a>
+            <a ui-sref="app.resetPass" style="color:#000000;" class="button button-stable button-small button-block button-clear pt5">Forgot Password</a>
             <button id="login-button1" type="submit" class="button button-stable  button-block">Login</button>
         </form>
         <ion-list>
-            <a ui-sref="app.signup" id="login-button2" style="color:#000000;" class="button button-positive  button-block button-clear">Or create an account</a>
+            <a ui-sref="app.signup" style="color:#000000;" class="button button-positive button-block button-clear pt5">Or create an account</a>
         </ion-list>
     </ion-content>
 </ion-view>
@@ -40,5 +43,11 @@
     <div class="error" ng-messages="required">
         <i class="ion-information-circled"></i> 
         This field is required!
+    </div>
+</script>
+<script id="loginerror-list1.html" type="text/ng-template">  
+    <div class="error" ng-messages="$invalid">
+        <i class="ion-information-circled"></i> 
+        Invalid Email!
     </div>
 </script>
