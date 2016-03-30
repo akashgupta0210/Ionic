@@ -47,22 +47,27 @@
                     <div>
                         <label class="item item-input trans">
                             <span class="input-label">Email</span>
-                            <input class="transDisabled" type="text" name="email" ng-model="user.email" placeholder=&nbsp;&nbsp;yourmail@example.com disabled>
+                            <input class="trans" type="text" name="email" ng-model="user.email" placeholder=&nbsp;&nbsp;yourmail@example.com disabled>
                         </label>
                     </div>
-                    <div ng-class="{'has-error' : profileForm1.$submitted && profileForm1.phonePre.$invalid, 'no-errors' : profileForm1.$submitted && profileForm1.phonePre.$valid}">
+                    <div ng-class="{'has-error' : profileForm1.$submitted && (profileForm1.phonePre.$invalid || profileForm1.phoneNumber.$invalid), 'no-errors' : profileForm1.$submitted && (profileForm1.phonePre.$valid && profileForm1.phoneNumber.$valid)}">
                         <label class="item item-input trans">
                             <span class="input-label">Contact No</span>
-                            <div class="w60">
-                                <input type="text" max="2" name="phonePre" ng-model="user.phonePre" ng-pattern="/[0-9]/" placeholder=&nbsp;&nbsp;xx>
+                            <div class="w20">
+                                <input type="text" name="phonePre" ng-model="user.phonePre" ng-pattern="/[0-9]/" placeholder=&nbsp;&nbsp;xx>
                             </div>
-                            <div class="w100">
-                                <input type="text" name="phoneNumber" ng-model="user.phoneNumber" ng-pattern="/[0-9]/" placeholder=&nbsp;&nbsp;xxxxxxxxxx max="10" required>
+                            <div class="pr10p ml5">
+                                <input type="text" name="phoneNumber" ng-model="user.phoneNumber" ng-pattern="/[0-9]/" placeholder=&nbsp;&nbsp;xxxxxxxxxx class="w70" required>
                             </div>
                         </label>
-                        <div class="error-container" ng-if="profileForm1.$submitted && profileForm1.phonePre.$invalid">
-                            <div ng-messages="profileForm1.phonePre.$error">
+                        <div class="error-container" ng-if="profileForm1.$submitted && (profileForm1.phonePre.$invalid || profileForm1.phoneNumber.$invalid) || user.phonePre.length>3 || user.phoneNumber.length>10">
+                            <div ng-if="profileForm1.phonePre.$error || profileForm1.phoneNumber.$invalid || (user.phonePre.length>1 && user.phoneNumber.length>1)" ng-messages="(profileForm1.phonePre.$error || profileForm1.phoneNumber.$invalid)">
+                            <h5>qwes</h5>
                                 <div ng-messages-include="usererror-list.html"></div>
+                            </div>
+                            <div ng-if="user.phonePre.length>3 || user.phoneNumber.length>10" ng-messages="(profileForm1.phonePre.$error || profileForm1.phoneNumber.$error)">
+                            <h5>asd</h5>
+                                <div ng-messages-include="usererror-list1.html"></div>
                             </div>
                         </div>
                     </div>
@@ -414,5 +419,11 @@
     <div class="error" ng-messages="required">
         <i class="ion-information-circled"></i> 
         This field is required!
+    </div>
+</script>
+<script id="usererror-list1.html" type="text/ng-template">  
+    <div class="error" ng-messages="max">
+        <i class="ion-information-circled"></i> 
+        asd
     </div>
 </script>
