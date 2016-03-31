@@ -45,7 +45,6 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
     $scope.rpass=function(isValid){
         if (isValid){
             if ($rootScope.resetpassUser){
-                console.log($scope.pass);
                 RegisterService.update($scope.pass)
                 $state.go('app.login');
             }
@@ -57,7 +56,6 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
         var loggedUser = [];
         if (isValid){
             AuthenticationService.Login($scope.login.email, $scope.login.password, function(response) {
-                console.log(response);
                 if(response.success) {
                     AuthenticationService.SetCredentials($scope.login.email, $scope.login.password);
                     if (response.Obj){
@@ -102,11 +100,9 @@ app.controller('signupCtrl', function($scope,$state,RegisterService,$timeout,ion
                 for (var i=0;i<$scope.things.users.length;i++){
                     if ($scope.signUp.email != $scope.things.users[i].email){
                         signin = true;
-                        console.log("a");
                     }
                 }
             } else {
-                console.log("a");
                 signin = true;
             }
             if (signin){
@@ -129,9 +125,8 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
 
     $scope.initializeUser=function(){
         $scope.user={};
-        $scope.user = {
-            gender: 'male'
-        };
+        $scope.user.gender ={};
+        $scope.user.gender = "Male";
         $scope.user.address=[];
         $scope.user.qualification_details=[];
         $scope.user.experience_details=[];
@@ -142,6 +137,11 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
         $scope.user.references.push({});
     }
 
+    $scope.genList = [
+        { text: "Male", value: "Male"},
+        { text: "Female", value: "Female" }
+    ];
+
     // $scope.$watch(function(){
     //     return $location.path();
     // }, function(value){
@@ -150,10 +150,8 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
 
     $scope.save = function(isValid){
         if (isValid){
-            $rootScope.temp = $scope.temp;
-            $scope.temp.references.push($scope.reference);
-            $scope.temp.references.splice(1,1);
-            ProfileService.add($scope.temp);
+            $rootScope.user = $scope.user;
+            ProfileService.add($scope.user);
             $state.go('app.profileMenu');
         }
     }
@@ -167,37 +165,26 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
     }
 
     $scope.nextPage = function(isValid){
-        if ($scope.page1 == true){
-            if (isValid){
-                $scope.temp = $scope.user;
-                $scope.page1 = false;
-                $scope.page2 = true;
-                $scope.value = "20";
-            }
-        } else
-        if ($scope.page2 == true){
-            if (isValid){
-                $scope.temp.address.push($scope.address);
-                $scope.temp.address.splice(1,1);
+        if (isValid){
+            if ($scope.page1 == true){
+                if ($scope.user.phonePre.length == 2 && $scope.user.phoneNumber.length == 10){
+                    $scope.page1 = false;
+                    $scope.page2 = true;
+                    $scope.value = "20";
+                }
+            } else
+            if ($scope.page2 == true){
                 $scope.page2 = false;
                 $scope.page3 = true;
                 $scope.value = "40";
-            }
-        } else
-        if ($scope.page3 == true){
-            if (isValid){
-                $scope.temp.qualification_details.push($scope.qualification);
-                $scope.temp.qualification_details.splice(1,1);
+            } else
+            if ($scope.page3 == true){
                 $scope.page3 = false;
                 $scope.page4 = true;
                 $scope.value = "60";
-            }
-        } else
-        if ($scope.page4 == true){
-            if (isValid){
-                $scope.temp.experience_details.push($scope.experience);
-                $scope.temp.experience_details.splice(1,1);
-                $rootScope.temp = $scope.temp;
+            } else
+            if ($scope.page4 == true){
+                $rootScope.user = $scope.user;
                 $scope.page4 = false;
                 $scope.page5 = true;
                 $scope.value = "80";
@@ -228,7 +215,6 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
         var loggedInUser = [];
         for (var i=0;i<$scope.things.users.length;i++){
             if ($rootScope.user){
-                console.log($rootScope.user);
                 if ($rootScope.user.email == $scope.things.users[i].email){
                     loggedInUser.push($scope.things.users[i]);
                 }
@@ -246,10 +232,12 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
     };
 
     $scope.addAddress = function () {
+        this.profileForm2.$submitted = false;
         $scope.user.address.push({});
     };
 
     $scope.addQualification = function () {
+        this.profileForm3.$submitted = false;
         $scope.user.qualification_details.push({});
     };
     
@@ -259,6 +247,7 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
     };
 
      $scope.addExperience = function () {
+        this.profileForm4.$submitted = false;
         $scope.user.experience_details.push({});
     };
     
@@ -268,6 +257,7 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
     };
 
     $scope.addReference = function () {
+        this.profileForm5.$submitted = false;
         $scope.user.references.push({});
     };
 
@@ -281,7 +271,7 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
         var i;
         var d = new Date();
         var n = d.getFullYear();
-        for (i = 1900; i <= n; i++) {
+        for (i = n; i>1900 ; i--) {
             $scope.dates.push(i);
         }
     };

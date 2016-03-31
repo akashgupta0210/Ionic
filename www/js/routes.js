@@ -180,5 +180,5 @@ angular.module('app.routes', [])
       }
    });
 
-   $urlRouterProvider.otherwise('/app/profile/edit')
+   $urlRouterProvider.otherwise('/app/login')
 });

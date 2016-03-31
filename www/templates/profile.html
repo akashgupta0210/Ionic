@@ -29,8 +29,9 @@
                     <div class="gender">
                         <label class="item item-input trans">
                             <span class="input-label">Gender</span>
-                            <ion-radio ng-model="user.gender" class="maleGender trans" ng-value="male">Male</ion-radio>
-                            <ion-radio ng-model="user.gender" class="femaleGender trans" ng-value="'female'">Female</ion-radio>
+                            <ion-radio class="trans maleGender" ng-repeat="gen in genList" ng-value="gen.value" ng-model="user.gender">{{gen.text}}</ion-radio>
+                            <!-- <ion-radio ng-model="user.gender" class="maleGender trans" ng-value="male">Male</ion-radio> -->
+                            <!-- <ion-radio ng-model="user.gender" class="femaleGender trans" ng-value="'female'">Female</ion-radio> -->
                         </label>
                     </div>
                     <div ng-class="{'has-error' : profileForm1.$submitted && profileForm1.dob.$invalid, 'no-errors' : profileForm1.$submitted && profileForm1.dob.$valid}">
@@ -54,20 +55,21 @@
                         <label class="item item-input trans">
                             <span class="input-label">Contact No</span>
                             <div class="w20">
-                                <input type="text" name="phonePre" ng-model="user.phonePre" ng-pattern="/[0-9]/" placeholder=&nbsp;&nbsp;xx>
+                                <input type="text" name="phonePre" ng-model="user.phonePre" ng-pattern="/[0-9]/" placeholder=&nbsp;&nbsp;xx max="2" required>
                             </div>
                             <div class="pr10p ml5">
                                 <input type="text" name="phoneNumber" ng-model="user.phoneNumber" ng-pattern="/[0-9]/" placeholder=&nbsp;&nbsp;xxxxxxxxxx class="w70" required>
                             </div>
                         </label>
-                        <div class="error-container" ng-if="profileForm1.$submitted && (profileForm1.phonePre.$invalid || profileForm1.phoneNumber.$invalid) || user.phonePre.length>3 || user.phoneNumber.length>10">
-                            <div ng-if="profileForm1.phonePre.$error || profileForm1.phoneNumber.$invalid || (user.phonePre.length>1 && user.phoneNumber.length>1)" ng-messages="(profileForm1.phonePre.$error || profileForm1.phoneNumber.$invalid)">
-                            <h5>qwes</h5>
+                        <div class="error-container" ng-if="profileForm1.$submitted && ((profileForm1.phonePre.$invalid && profileForm1.phoneNumber.$invalid) || (profileForm1.phonePre.$error && profileForm1.phoneNumber.$error))">
+                            <div ng-if="(profileForm1.phonePre.$error || profileForm1.phoneNumber.$error) && (!user.phonePre.length || !user.phoneNumber.length)" ng-messages="profileForm1.phonePre.$invalid || profileForm1.phoneNumber.$invalid">
                                 <div ng-messages-include="usererror-list.html"></div>
                             </div>
-                            <div ng-if="user.phonePre.length>3 || user.phoneNumber.length>10" ng-messages="(profileForm1.phonePre.$error || profileForm1.phoneNumber.$error)">
-                            <h5>asd</h5>
+                            <div ng-if="user.phoneNumber.length>10 || user.phoneNumber.length<10" ng-messages="profileForm1.phoneNumber.$invalid">
                                 <div ng-messages-include="usererror-list1.html"></div>
+                            </div>
+                            <div ng-if="user.phonePre.length>2 || user.phonePre.length<2" ng-messages="profileForm1.phonePre.$invalid">
+                                <div ng-messages-include="usererror-list2.html"></div>
                             </div>
                         </div>
                     </div>
@@ -82,26 +84,25 @@
                 <ion-list>
                     <label class="ml128">Address</label>
                     <div class="address" ng-repeat="address in user.address">
-                        <div class="" ng-class="{'has-error' : profileForm2.$submitted && profileForm2.addressType.$invalid, 'no-errors' : profileForm2.$submitted && profileForm2.addressType.$valid}">
-                            <label class="item item-input item-select transF50">
+                        <div ng-class="{'has-error' : profileForm2.$submitted && profileForm2.addressType.$invalid, 'no-errors' : profileForm2.$submitted && profileForm2.addressType.$valid}">
+                            <label class="item item-input item-select trans addressPosition selectTag">
                                 <div class="input-label">Address Type</div>
-                                <select name="addressType" data-ng-model="address.addressType" class="transL50" required>
+                                <select name="addressType" data-ng-model="address.addressType" class="trans" required>
                                     <option value="" selected disabled>Please Select</option>
                                     <option value="Permanent Address">Permanent</option>
                                     <option value="Temporary Address">Temporary</option>
                                     <option value="Office Address">Office</option>
                                 </select>
-                                <div class="error-container" ng-if="profileForm2.$submitted && profileForm2.addressType.$invalid">
-                                    <div ng-messages="profileForm2.addressType.$error">
-                                        <div ng-messages-include="usererror-list.html"></div>
-                                    </div>
-                                </div>
                             </label>
+                            <div class="error-container" ng-if="profileForm2.$submitted && profileForm2.addressType.$invalid">
+                                <div ng-messages="profileForm2.addressType.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
                         </div>
-
                         <div ng-class="{'has-error' : profileForm2.$submitted && profileForm2.address1.$invalid, 'no-errors' : profileForm2.$submitted && profileForm2.address1.$valid}">
                             <label class="item item-input trans">
-                                <span class="ion-ios-home"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Address Line 1 name="address1" ng-model="address.addressLine1" required>
+                                <span class="ion-ios-home"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Address&nbsp;Line&nbsp;1 name="address1" ng-model="address.addressLine1" required>
                             </label>
                             <div class="error-container" ng-if="profileForm2.$submitted && profileForm2.address1.$invalid">
                                 <div ng-messages="profileForm2.address1.$error">
@@ -111,12 +112,12 @@
                         </div>
                         <div>
                             <label class="item item-input trans">
-                                <span class="ion-ios-home-outline"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Address Line 2 name="address2" ng-model="address.addressLine2" required>
+                                <span class="ion-ios-home-outline"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Address&nbsp;Line&nbsp;2&nbsp;(optional) name="address2" ng-model="address.addressLine2">
                             </label>
                         </div>
                         <div ng-class="{'has-error' : profileForm2.$submitted && profileForm2.city.$invalid, 'no-errors' : profileForm2.$submitted && profileForm2.city.$valid}">
                             <label class="item item-input trans">
-                                <span class="ion-location"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;City name="city" ng-model="address.city" required>
+                                <span class="ion-location mr6"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;City name="city" ng-model="address.city" required>
                             </label>
                             <div class="error-container" ng-if="profileForm2.$submitted && profileForm2.city.$invalid">
                                 <div ng-messages="profileForm2.city.$error">
@@ -146,11 +147,14 @@
                         </div>
                         <div ng-class="{'has-error' : profileForm2.$submitted && profileForm2.pincode.$invalid, 'no-errors' : profileForm2.$submitted && profileForm2.pincode.$valid}">
                             <label class="item item-input trans">
-                                <span class="ion-email"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Pincode max="6" name="pincode" ng-model="address.pincode" ng-pattern="/[0-9]/" required>
+                                <span class="ion-email"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Pincode name="pincode" ng-model="address.pincode" ng-pattern="/[0-9]/" ng-maxlength="6" ng-minlength="6" required>
                             </label>
-                            <div class="error-container" ng-if="profileForm2.$submitted && profileForm2.pincode.$invalid">
-                                <div ng-messages="profileForm2.pincode.$error">
+                            <div class="error-container" ng-if="profileForm2.$submitted && (profileForm2.pincode.$invalid || profileForm2.pincode.$error)">
+                                <div ng-if="profileForm2.pincode.$invalid" ng-messages="profileForm2.pincode.$invalid">
                                     <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                                <div ng-if="address.pincode.length<6 || address.pincode.length>6" ng-messages="profileForm2.pincode.$invalid">
+                                    <div ng-messages-include="pincode.html"></div>
                                 </div>
                             </div>
                         </div>
@@ -186,7 +190,7 @@
                     <div class="Qualification" ng-repeat="qualification in user.qualification_details">
                         <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.examname.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.examname.$valid}">
                             <label class="item item-input trans">
-                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Exam name="examname" ng-model="qualification.examination" required>
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Exam&nbsp;Name name="examname" ng-model="qualification.examination" required>
                             </label>
                             <div class="error-container" ng-if="profileForm3.$submitted && profileForm3.examname.$invalid">
                                 <div ng-messages="profileForm3.examname.$error">
@@ -205,35 +209,35 @@
                             </div>
                         </div>
                         <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.university.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.university.$valid}">
-                            <label class="item item-input item-select transF50">
+                            <label class="item item-input item-select trans selectTag addressPosition mb5">
                                 <div class="input-label">Passing Year</div>
-                                <select name="university" data-ng-model="qualification.year_of_passing" class="transL50" required>
+                                <select name="university" data-ng-model="qualification.year_of_passing" class="trans" required>
                                     <option value="" selected disabled>Please Select</option>
                                     <option ng-repeat="date in dates">{{date}}</option>
                                     <option ng-if="qualification.year_of_passing" selected>{{qualification.year_of_passing}}</option>
                                 </select>
-                                <div class="error-container" ng-if="profileForm3.$submitted && profileForm3.university.$invalid">
-                                    <div ng-messages="profileForm3.university.$error">
-                                        <div ng-messages-include="usererror-list.html"></div>
-                                    </div>
-                                </div>
                             </label>
+                            <div class="error-container" ng-if="profileForm3.$submitted && profileForm3.university.$invalid">
+                                <div ng-messages="profileForm3.university.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.grade.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.grade.$valid}">
-                            <label class="item item-input item-select transF50">
+                            <label class="item item-input item-select trans addressPosition selectTag">
                                 <div class="input-label">Grade</div>
-                                <select name="grade" data-ng-model="qualification.grade_obtained" class="transL50" required>
+                                <select name="grade" data-ng-model="qualification.grade_obtained" class="trans" required>
                                     <option value="" selected disabled>Please Select</option>
                                     <option value="Percentage">Percentage</option>
                                     <option value="CGPA">CGPA</option>
                                     <option value="SGPA">SGPA</option>
                                 </select>
-                                <div class="error-container" ng-if="profileForm3.$submitted && profileForm3.grade.$invalid">
-                                    <div ng-messages="profileForm3.grade.$error">
-                                        <div ng-messages-include="usererror-list.html"></div>
-                                    </div>
-                                </div>
                             </label>
+                            <div class="error-container" ng-if="profileForm3.$submitted && profileForm3.grade.$invalid">
+                                <div ng-messages="profileForm3.grade.$error">
+                                    <div ng-messages-include="usererror-list.html"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.marks.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.marks.$valid}">
                             <label class="item item-input trans">
@@ -245,16 +249,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="" ng-class="{'has-error' : profileForm3.$submitted && profileForm3.specialization.$invalid, 'no-errors' : profileForm3.$submitted && profileForm3.specialization.$valid}">
-                            <label class="item item-input trans">
-                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Specialization(if any) name="specialization" ng-model="qualification.specialisation" required>
-                            </label>
-                            <div class="error-container" ng-if="profileForm3.$submitted && profileForm3.specialization.$invalid">
-                                <div ng-messages="profileForm3.specialization.$error">
-                                    <div ng-messages-include="usererror-list.html"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <label class="item item-input trans">
+                            <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Specialization(if&nbsp;any) name="specialization" ng-model="qualification.specialisation">
+                        </label>
                         <div class="ulPagnate">
                             <label>&nbsp;</label>
                                 <div class="" ng-show="$last">
@@ -275,8 +272,8 @@
                     </div>
                 </ion-list>
                 <div class="item-input-inset">
-                    <button class="prevButton" ng-click="prevPage();" class="button button-stable button-small button-block button-clear">Previous</button>
-                    <button class="nextButton" ng-click="nextPage(profileForm3.$valid);" class="button button-stable button-small button-block button-clear">Next</button>
+                    <button class="ml-12" ng-click="prevPage();" class="button button-stable button-small button-block button-clear">Previous</button>
+                    <button class="ml214" ng-click="nextPage(profileForm3.$valid);" class="button button-stable button-small button-block button-clear">Next</button>
                 </div>
             </form>
         </div>
@@ -285,12 +282,12 @@
                 <ion-list>
                     <label class="ml120">Experience</label>
                     <div class="Qualification" ng-repeat="experience in user.experience_details">
-                        <div class="" ng-class="{'has-error' : profileForm4.$submitted && profileForm4.employer.$invalid, 'no-errors' : profileForm4.$submitted && profileForm4.employer.$valid}">
+                        <div class="" ng-class="{'has-error' : profileForm4.$submitted && profileForm4.company.$invalid, 'no-errors' : profileForm4.$submitted && profileForm4.company.$valid}">
                             <label class="item item-input trans">
-                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Employer name="employer" ng-model="experience.employer" required>
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Company name="company" ng-model="experience.company" required>
                             </label>
-                            <div class="error-container" ng-if="profileForm4.$submitted && profileForm4.employer.$invalid">
-                                <div ng-messages="profileForm4.employer.$error">
+                            <div class="error-container" ng-if="profileForm4.$submitted && profileForm4.company.$invalid">
+                                <div ng-messages="profileForm4.company.$error">
                                     <div ng-messages-include="usererror-list.html"></div>
                                 </div>
                             </div>
@@ -307,7 +304,7 @@
                         </div>
                         <div class="" ng-class="{'has-error' : profileForm4.$submitted && profileForm4.startdate.$invalid, 'no-errors' : profileForm4.$submitted && profileForm4.startdate.$valid}">
                             <label class="item item-input trans">
-                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="date" name="startdate" ng-model="experience.start_date" required>
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="date" name="startdate" class="dateclass placeholderclass" placeholder=&nbsp;&nbsp;Start&nbsp;Date ng-model="experience.start_date" required>
                             </label>
                             <div class="error-container" ng-if="profileForm4.$submitted && profileForm4.startdate.$invalid">
                                 <div ng-messages="profileForm4.startdate.$error">
@@ -317,7 +314,7 @@
                         </div>
                         <div class="" ng-class="{'has-error' : profileForm4.$submitted && profileForm4.enddate.$invalid, 'no-errors' : profileForm4.$submitted && profileForm4.enddate.$valid}">
                             <label class="item item-input trans">
-                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="date" name="enddate" ng-model="experience.end_date" required>
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="date" name="enddate" class="dateclass placeholderclass" placeholder=&nbsp;&nbsp;End&nbsp;Date ng-model="experience.end_date" required>
                             </label>
                             <div class="error-container" ng-if="profileForm4.$submitted && profileForm4.enddate.$invalid">
                                 <div ng-messages="profileForm4.enddate.$error">
@@ -345,8 +342,8 @@
                     </div>
                 </ion-list>
                 <div class="item-input-inset">
-                    <button class="prevButton" ng-click="prevPage();" class="button button-stable button-small button-block button-clear">Previous</button>
-                    <button class="nextButton" ng-click="nextPage(profileForm4.$valid);" class="button button-stable button-small button-block button-clear">Next</button>
+                    <button class="ml-12" ng-click="prevPage();" class="button button-stable button-small button-block button-clear">Previous</button>
+                    <button class="ml214" ng-click="nextPage(profileForm4.$valid);" class="button button-stable button-small button-block button-clear">Next</button>
                 </div>
             </form>
         </div>
@@ -357,7 +354,7 @@
                     <div class="Qualification" ng-repeat="reference in user.references">
                         <div class="" ng-class="{'has-error' : profileForm5.$submitted && profileForm5.refname.$invalid, 'no-errors' : profileForm5.$submitted && profileForm5.refname.$valid}">
                             <label class="item item-input trans">
-                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Refrence Name name="refname" ng-model="reference.ref_name" required>
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Refrence&nbsp;Name name="refname" ng-model="reference.ref_name" required>
                             </label>
                             <div class="error-container" ng-if="profileForm5.$submitted && profileForm5.refname.$invalid">
                                 <div ng-messages="profileForm5.refname.$error">
@@ -367,7 +364,7 @@
                         </div>
                         <div class="" ng-class="{'has-error' : profileForm5.$submitted && profileForm5.contact.$invalid, 'no-errors' : profileForm5.$submitted && profileForm5.contact.$valid}">
                             <label class="item item-input trans">
-                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Refrence Contact name="contact" ng-model="reference.ref_phno" ng-pattern="/[0-9]/" maxlength="10" required>
+                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Refrence&nbsp;Contact name="contact" ng-model="reference.ref_phno" ng-pattern="/[0-9]/" maxlength="10" required>
                             </label>
                             <div class="error-container" ng-if="profileForm5.$submitted && profileForm5.contact.$invalid">
                                 <div ng-messages="profileForm5.contact.$error">
@@ -375,28 +372,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="" ng-class="{'has-error' : profileForm5.$submitted && profileForm5.comments.$invalid, 'no-errors' : profileForm5.$submitted && profileForm5.comments.$valid}">
-                            <label class="item item-input trans">
-                                <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Comments(if any) name="comments" ng-model="reference.comments" required>
-                            </label>
-                            <div class="error-container" ng-if="profileForm5.$submitted && profileForm5.comments.$invalid">
-                                <div ng-messages="profileForm5.comments.$error">
-                                    <div ng-messages-include="usererror-list.html"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <label class="item item-input trans">
+                            <span class="ion-clipboard"></span>&nbsp;&nbsp;<input type="text" placeholder=&nbsp;&nbsp;Comments(if&nbsp;any) name="comments" ng-model="reference.comments" required>
+                        </label>                            
                         <div class="ulPagnate">
                             <label>&nbsp;</label>
-                                <div class="" ng-show="$last">
-                                    <button class="pull-left" type="button" ng-click="removeReference(reference)" ng-show="$index>0">
-                                        <i class="ion-android-remove-circle"></i>
-                                    </button>
-                                    <button type="button" ng-click="addReference();">
+                                <div class="refrencePosition" ng-show="$last">
+                                    <button class="ml35" type="button" ng-click="addReference();">
                                         <i class="ion-android-add-circle"></i>
                                     </button>
+                                    <button class="ml212" type="button" ng-click="removeReference(reference)" ng-show="$index>0">
+                                        <i class="ion-android-remove-circle"></i>
+                                    </button>
                                 </div>
-                            <div class=""  ng-hide="$last">
-                                <button type="button" ng-click="removeReference(reference)">
+                            <div class="refrencePosition" ng-hide="$last">
+                                <button class="ml277" type="button" ng-click="removeReference(reference)">
                                     <i class="ion-android-remove-circle"></i>
                                 </button>
                             </div>
@@ -405,8 +395,8 @@
                     </div>
                 </ion-list>
                 <div class="item-input-inset">
-                    <button class="prevButton" ng-click="prevPage();" class="button button-stable button-small button-block button-clear">Previous</button>
-                    <button class="nextButton" ng-click="save(profileForm5.$valid);" class="button button-stable button-small button-block button-clear">Submit</button>
+                    <button class="ml-12" ng-click="prevPage();" class="button button-stable button-small button-block button-clear">Previous</button>
+                    <button class="ml198" ng-click="save(profileForm5.$valid);" class="button button-stable button-small button-block button-clear">Submit</button>
                 </div>
             </form>
         </div>
@@ -424,6 +414,18 @@
 <script id="usererror-list1.html" type="text/ng-template">  
     <div class="error" ng-messages="max">
         <i class="ion-information-circled"></i> 
-        asd
+        Invalid Contact Number!
+    </div>
+</script>
+<script id="usererror-list2.html" type="text/ng-template">
+    <div class="error" ng-messages="phonePre">
+        <i class="ion-information-circled"></i> 
+        Country code should be of two digits.
+    </div>
+</script>
+<script id="pincode.html" type="text/ng-template">
+    <div class="error" ng-messages="pincode">
+        <i class="ion-information-circled"></i> 
+        Invalid Pincode!
     </div>
 </script>

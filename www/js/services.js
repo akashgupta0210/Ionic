@@ -112,6 +112,7 @@ angular.module('app.services', [])
                     authdata: authdata
                 }
             };
+            console.log($rootScope.globals);
             $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
             $localStorage.cookies = $rootScope.globals;
         };
