@@ -5,7 +5,7 @@
                 <div ng-class="{'has-error' : signUpForm.$submitted && signUpForm.name.$invalid, 'no-errors' : signUpForm.$submitted && signUpForm.name.$valid}">
                     <label class="item item-input trans">
                         <span class="input-label">Name</span>
-                        <input name="name" ng-model="signUp.name" type="text" placeholder=&nbsp;&nbsp;Name required>
+                        <input name="name" ng-model="signUp.name" type="text" placeholder="Name" required>
                     </label>
                     <div class="error-container" ng-if="signUpForm.$submitted && signUpForm.name.$invalid">
                         <div ng-messages="signUpForm.name.$error">
@@ -16,7 +16,7 @@
                 <div ng-class="{'has-error' : signUpForm.$submitted && signUpForm.username.$invalid, 'no-errors' : signUpForm.$submitted && signUpForm.username.$valid}">
                     <label class="item item-input trans">
                         <span class="input-label">Username</span>
-                        <input name="username" ng-model="signUp.username" type="text" placeholder=&nbsp;&nbsp;Username required>
+                        <input name="username" ng-model="signUp.username" type="text" placeholder="Username" required>
                     </label>
                     <div class="error-container" ng-if="signUpForm.$submitted && signUpForm.username.$invalid">
                         <div ng-messages="signUpForm.username.$error">
@@ -27,7 +27,7 @@
                 <div ng-class="{'has-error' : signUpForm.$submitted && signUpForm.password.$invalid, 'no-errors' : signUpForm.$submitted && signUpForm.password.$valid}">
                     <label class="item item-input trans">
                         <span class="input-label">Password</span>
-                        <input type="password" ng-model="signUp.password" placeholder=&nbsp;&nbsp;Password name="password" required>
+                        <input type="password" ng-model="signUp.password" placeholder="Password" name="password" required>
                     </label>
                     <div class="error-container" ng-if="signUpForm.$submitted && signUpForm.password.$invalid">
                         <div ng-messages="signUpForm.password.$error">
@@ -38,7 +38,7 @@
                 <div ng-class="{'has-error' : signUpForm.$submitted && signUpForm.email.$invalid, 'no-errors' : signUpForm.$submitted && signUpForm.email.$valid}">
                     <label class="item item-input trans">
                         <span class="input-label">Email</span>
-                        <input name="email" ng-model="signUp.email" type="email" placeholder=&nbsp;&nbsp;Email required>
+                        <input name="email" ng-model="signUp.email" type="email" placeholder="Email" required>
                     </label>
                     </div>
                     <div class="error-container" ng-if="signUpForm.$submitted && signUpForm.email.$invalid">

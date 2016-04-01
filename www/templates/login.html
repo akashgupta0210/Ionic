@@ -1,4 +1,4 @@
-<ion-view view-title="Login" ng-controller="loginCtrl" ng-init="initializeLogin();">
+<ion-view title="Login" ng-controller="loginCtrl" ng-init="initializeLogin();">
     <ion-content overflow-scroll="true" padding="true" style="background: url(img/wxhXjusvQ726Hccv461l_Lighthouse.jpg) no-repeat center; background-size: cover;" class="has-header">
         <p class="error">{{error}}</p>
         <form class="list" name="loginForm" novalidate="" ng-submit="loginHere(loginForm.$valid)">
@@ -6,7 +6,7 @@
                 <div ng-class="{'has-error' : loginForm.$submitted && loginForm.email.$invalid, 'no-errors' : loginForm.$submitted && loginForm.email.$valid}">
                     <label class="item item-input trans">
                         <span class="input-label">Email</span>
-                        <input type="email" placeholder=&nbsp;&nbsp;Email name="email" ng-model="login.email" required>
+                        <input type="email" placeholder="Email" name="email" ng-model="login.email" required>
                     </label>
                     <div class="error-container" ng-if="loginForm.$submitted && loginForm.email.$invalid">
                         <div ng-if="loginForm.email.$error.required" ng-messages="loginForm.email.$error.required">
@@ -20,7 +20,7 @@
                 <div ng-class="{'has-error' : loginForm.$submitted && loginForm.password.$invalid, 'no-errors' : loginForm.$submitted && loginForm.password.$valid}">
                 <label class="item item-input trans">
                     <span class="input-label">Password</span>
-                    <input type="{{password}}" name="password" ng-model="login.password" placeholder=&nbsp;&nbsp;Password required>
+                    <input type="{{password}}" name="password" ng-model="login.password" placeholder="Password" required>
                 </label>
                 <div class="error-container" ng-if="loginForm.$submitted && loginForm.password.$invalid">
                     <div ng-messages="loginForm.password.$error">

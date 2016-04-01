@@ -1,14 +1,11 @@
 var app = angular.module('app.controllers', [])
-
 app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,ionicMaterialInk,$timeout,AuthenticationService) {
 	$scope.password="password";
     $scope.things = RegisterService.getAll();
-    console.log($scope.things);
     /* Hide Header in login page */
-        $timeout(function() {
-            $scope.$parent.hideHeader();
-        }, 0);
-    /* ************************** */
+    $(".hideButton").css('visibility','hidden');
+    $("ion-side-menu-content").removeClass("pane");
+    $(".displayNone").css('display','none');
     ionicMaterialInk.displayEffect();
     
     $scope.initializeLogin = function(){
@@ -57,7 +54,7 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
         if (isValid){
             AuthenticationService.Login($scope.login.email, $scope.login.password, function(response) {
                 if(response.success) {
-                    AuthenticationService.SetCredentials($scope.login.email, $scope.login.password);
+                    AuthenticationService.SetCredentials($scope.login.email, $scope.login.password,response);
                     if (response.Obj){
                         $rootScope.user = response.Obj;
                     }
@@ -82,16 +79,16 @@ app.controller('loginCtrl', function($scope, $state, RegisterService,$rootScope,
         }
     };
 
-})
+});
 
 app.controller('signupCtrl', function($scope,$state,RegisterService,$timeout,ionicMaterialInk) {
     $scope.things = RegisterService.getAll();
     console.log($scope.things); 
     /* Hide Header in login page */
-        $timeout(function() {
-            $scope.$parent.hideHeader();
-        }, 0);
-        ionicMaterialInk.displayEffect();
+    $(".hideButton").css('visibility','hidden');
+    $("ion-side-menu-content").removeClass("pane");
+    $(".displayNone").css('display','none');
+    ionicMaterialInk.displayEffect();
     /* ************************** */
 	$scope.createUser = function(isValid) {
     	if(isValid) {
@@ -122,6 +119,10 @@ app.controller('signupCtrl', function($scope,$state,RegisterService,$timeout,ion
 app.controller('profileCtrl', function($scope, $location,$rootScope,$state,ProfileService,RegisterService) {
 
     $scope.things = RegisterService.getAll();
+    $(".hideButton").css('visibility','');
+    $("ion-side-menu-content").addClass("pane");
+    $(".displayNone").css('display','');
+    $(".displaySome").css('display','none');
 
     $scope.initializeUser=function(){
         $scope.user={};
@@ -152,6 +153,7 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
         if (isValid){
             $rootScope.user = $scope.user;
             ProfileService.add($scope.user);
+            $(".displaySome").css('display','');
             $state.go('app.profileMenu');
         }
     }
@@ -280,7 +282,10 @@ app.controller('profileCtrl', function($scope, $location,$rootScope,$state,Profi
 
 app.controller('storageCtrl', function($scope, $location,ProfileService,$state,RegisterService) {
     $scope.things = RegisterService.getAll();
-    console.log($scope.things);
+    $(".hideButton").css('visibility','');
+    $("ion-side-menu-content").addClass("pane");
+    $(".displayNone").css('display','');
+    $(".displaySome").css('display','');
     $scope.delete = function(thing){
         if (thing.dob){
             ProfileService.remove(thing);
@@ -288,13 +293,13 @@ app.controller('storageCtrl', function($scope, $location,ProfileService,$state,R
             RegisterService.remove(thing);
         }
     }
-
-    $scope.logOut=function(){
-        $state.go('app.login');
-    }
 })
 
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
+    $(".hideButton").css('visibility','');
+    $("ion-side-menu-content").addClass("pane");
+    $(".displayNone").css('display','');
+    $(".displaySome").css('display','');
     var options = {timeout: 10000, enableHighAccuracy: true};
     $cordovaGeolocation.getCurrentPosition(options).then(function(position){
         var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -331,6 +336,10 @@ app.controller('storageCtrl', function($scope, $location,ProfileService,$state,R
 .controller('HomeCtrl', function($scope, $state, ionicMaterialMotion, ionicMaterialInk, $timeout,RegisterService,AuthenticationService) {
     $scope.things = RegisterService.getAll();
     $scope.user = $scope.things.profile[0];
+    $(".hideButton").css('visibility','');
+    $("ion-side-menu-content").addClass("pane");
+    $(".displayNone").css('display','');
+    $(".displaySome").css('display','');
     // Set Motion
     $timeout(function() {
         ionicMaterialMotion.slideUp({
@@ -384,21 +393,23 @@ app.controller('storageCtrl', function($scope, $location,ProfileService,$state,R
     };
 })
 
-.controller('logCtrl', function($scope, AuthenticationService,ProfileService) {
+.controller('logCtrl', function($scope, AuthenticationService,ProfileService,$localStorage) {
+    if ($localStorage.cookies){
+        $scope.user = $localStorage.cookies.Obj.Obj;
+    }
     $scope.logOut=function(){
         AuthenticationService.ClearCredentials();
+        $(".hideButton").css('visibility','hidden');
+        $("ion-side-menu-content").removeClass("pane");
+        $(".displayNone").css('display','none');
         $scope.visible=false;
     };
-//    $scope.initialize=function(){
-//        if (ProfileService.getAll().cookies){
-//            $scope.visible=true;
-//        } else {
-//            $scope.visible=false;
-//        }
-//    }
 })
 
 .controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout) {
+    $(".hideButton").css('visibility','');
+    $("ion-side-menu-content").addClass("pane");
+    $(".displayNone").css('display','');
     // Form data for the login modal
     $scope.loginData = {};
     $scope.isExpanded = false;

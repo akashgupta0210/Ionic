@@ -104,15 +104,15 @@ angular.module('app.services', [])
             //    });
         };
 
-        service.SetCredentials = function (username, password) {
+        service.SetCredentials = function (username, password,response) {
             var authdata = Base64.encode(username + ':' + password);
             $rootScope.globals = {
                 currentUser: {
                     username: username,
                     authdata: authdata
-                }
+                },
+                Obj:response
             };
-            console.log($rootScope.globals);
             $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
             $localStorage.cookies = $rootScope.globals;
         };

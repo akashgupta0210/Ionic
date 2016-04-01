@@ -49,6 +49,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 	font-size:12px!important;
     box-shadow: inset 0 1px 2px rgba(142, 149, 161, 0.35), 0px 1px 15px rgba(83, 81, 81, 0.5);
     margin-right: 20px!important;
+    padding-left: 8px!important;
 }
 
 .cursor{
@@ -115,7 +116,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 }
 
 .b419{
-	margin-bottom: 419px;
+	margin-bottom: 340px;
 }
 
 .mt49{
@@ -218,4 +219,13 @@ content:"";
 
 .ml212{
 	margin-left: 212px;
+}
+
+.disabledInput{
+	background-color: rgba(0, 0, 0, 0.2)!important;
+}
+
+.sideName{
+	margin-top: 90px;
+    margin-left: 10px;
 }

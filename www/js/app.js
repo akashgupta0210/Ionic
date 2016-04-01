@@ -2,16 +2,24 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
 
 .run(function($ionicPlatform,$rootScope,$location,$http,$localStorage) {
   $ionicPlatform.ready(function() {
-    $rootScope.globals = $localStorage.cookies || {};      
+    var registered=false;
+    $rootScope.globals = $localStorage.cookies || {};
     
     if ($rootScope.globals.currentUser) {
       $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+      for (var i=0;i<$localStorage.things.profile.length;i++){
+        if ($localStorage.cookies.currentUser.username == $localStorage.things.profile[i].email){
+          registered=true;
+        }
+      }
     }
 
-    if ($location.path() == '/app/login' && $rootScope.globals.currentUser) {
+    if (registered || ($location.path() == '/app/login' && registered)) {
         $location.path('/app/profile/menu');
+    } else
+    if (!registered || (!registered && $location.path() != '/app/login')) {
+      $location.path('/app/profile/edit');
     }
-    
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
       // redirect to login page if not logged in
       if ($location.path() !== '/app/login' && !$rootScope.globals.currentUser) {
